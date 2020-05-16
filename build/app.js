@@ -1,1 +1,0 @@
-"use strict";document.addEventListener("DOMContentLoaded",function(){alert("OZiTAG Auth App loaded")});

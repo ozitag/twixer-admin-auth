@@ -8,6 +8,7 @@ const watch = require('gulp-watch');
 const babel = require('gulp-babel');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
+const handlebars = require('gulp-compile-handlebars');
 
 sass.compiler = require('node-sass');
 
@@ -19,8 +20,15 @@ gulp.task('sass', () => {
         .pipe(gulp.dest('./build'));
 });
 
-gulp.task('html', () => {
-    return gulp.src('src/*.html')
+gulp.task('html', function () {
+    const templateData = {
+        title: 'OZiTAG',
+        base_path: ''
+    };
+
+    return gulp.src('src/index.hbs')
+        .pipe(handlebars(templateData))
+        .pipe(rename('index.html'))
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('build'));
 });
@@ -38,9 +46,13 @@ gulp.task('watch', () => {
 });
 
 gulp.task('favicon', () => {
-    return gulp.src('./src/favicon/*').pipe(gulp.dest('./build/favicon'));
+    return gulp.src('./assets/favicon/*').pipe(gulp.dest('./build/favicon'));
 });
 
-gulp.task('build', gulp.parallel('favicon', 'html', 'sass', 'scripts'));
+gulp.task('logo', () => {
+    return gulp.src('./assets/logo.png').pipe(gulp.dest('./build'));
+});
+
+gulp.task('build', gulp.parallel('favicon', 'logo', 'html', 'sass', 'scripts'));
 gulp.task('dev', gulp.parallel('build', 'watch'));
 gulp.task('default', gulp.parallel('build'));
