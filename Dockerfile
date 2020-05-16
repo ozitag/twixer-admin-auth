@@ -1,14 +1,19 @@
-FROM nginx:alpine
+FROM node:12-buster as build-stage
 
 WORKDIR /srv
 
-RUN apk update && apk add make git python g++
-RUN apk add --update nodejs npm && npm install -g gulp
+COPY ./package.json /srv/package.json
+RUN npm install
 
 COPY ./assets /srv/assets
 COPY ./src /srv/src
 COPY ./gulpfile.js /srv/gulpfile.js
-COPY ./package.json /srv/package.json
 
-RUN npm install && gulp build
-RUN cp -R /srv/build/* /usr/share/nginx/html
+ENV PAGE_TITLE $PAGE_TITLE
+ENV BASE_PATH $BASE_PATH
+ENV IS_LOGO_PNG $IS_LOGO_PNG
+
+RUN npm run build
+
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /srv/build /usr/share/nginx/html

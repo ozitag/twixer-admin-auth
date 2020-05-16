@@ -30,7 +30,7 @@ gulp.task('html', function () {
 
     return gulp.src('src/index.hbs')
         .pipe(handlebars(templateData))
-        .pipe(rename('index-' + process.env.PAGE_TITLE + '.html'))
+        .pipe(rename('index.html'))
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('build'));
 });
