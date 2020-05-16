@@ -1,3 +1,3 @@
 document.addEventListener('DOMContentLoaded', () => {
-    alert('App loaded');
+    alert('OZiTAG Auth App loaded');
 });
