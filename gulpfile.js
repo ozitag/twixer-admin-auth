@@ -25,11 +25,12 @@ gulp.task('html', function () {
     const templateData = {
         title: process.env.PAGE_TITLE || 'OZiTAG',
         base_path: process.env.BASE_PATH || '',
+        is_logo_png: process.env.IS_LOGO_PNG || false,
     };
 
     return gulp.src('src/index.hbs')
         .pipe(handlebars(templateData))
-        .pipe(rename('index.html'))
+        .pipe(rename('index-' + process.env.PAGE_TITLE + '.html'))
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('build'));
 });
