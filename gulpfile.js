@@ -37,6 +37,10 @@ gulp.task('watch', () => {
     watch('src/js/**/*.js', gulp.series('scripts'));
 });
 
-gulp.task('build', gulp.parallel('html', 'sass', 'scripts'));
+gulp.task('favicon', () => {
+    return gulp.src('./src/favicon/*').pipe(gulp.dest('./build/favicon'));
+});
+
+gulp.task('build', gulp.parallel('favicon', 'html', 'sass', 'scripts'));
 gulp.task('dev', gulp.parallel('build', 'watch'));
 gulp.task('default', gulp.parallel('build'));
