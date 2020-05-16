@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config();
 
 const gulp = require('gulp');
 const sass = require('gulp-sass');
@@ -9,7 +10,6 @@ const babel = require('gulp-babel');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const handlebars = require('gulp-compile-handlebars');
-const gutil = require('gulp-util');
 
 sass.compiler = require('node-sass');
 
@@ -23,8 +23,8 @@ gulp.task('sass', () => {
 
 gulp.task('html', function () {
     const templateData = {
-        title: gutil.env.PAGE_TITLE || 'OZiTAG',
-        base_path: gutil.env.BASE_PATH || '',
+        title: process.env.PAGE_TITLE || 'OZiTAG',
+        base_path: process.env.BASE_PATH || '',
     };
 
     return gulp.src('src/index.hbs')
@@ -41,7 +41,7 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('watch', () => {
-    watch('src/*.html', gulp.series('html'));
+    watch('src/*.hbs', gulp.series('html'));
     watch('src/sass/**/*.scss', gulp.series('sass'));
     watch('src/js/**/*.js', gulp.series('scripts'));
 });
