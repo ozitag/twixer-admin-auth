@@ -52,7 +52,8 @@ gulp.task('favicon', () => {
 });
 
 gulp.task('logo', () => {
-    return gulp.src('./assets/logo.png').pipe(gulp.dest('./build'));
+    gulp.src('./assets/logo.png').pipe(gulp.dest('./build'));
+    return gulp.src('./assets/logo.svg').pipe(gulp.dest('./build'));
 });
 
 gulp.task('build', gulp.parallel('favicon', 'logo', 'html', 'sass', 'scripts'));

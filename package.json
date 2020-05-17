@@ -1,10 +1,10 @@
 {
-  "name": "twixer-admin-auth",
+  "name": "viking-admin-auth",
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "./develop.sh",
-    "release": "./release.sh",
+    "dev": "./scripts/develop.sh",
+    "release": "./scripts/release.sh",
     "build": "./node_modules/.bin/gulp build"
   },
   "repository": {

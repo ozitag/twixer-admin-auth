@@ -1,19 +1,16 @@
-FROM node:12-buster as build-stage
+FROM nginx:alpine
 
 WORKDIR /srv
+
+RUN apk add --update make git python g++ nodejs npm
 
 COPY ./package.json /srv/package.json
 RUN npm install
 
+COPY ./gulpfile.js /srv/gulpfile.js
 COPY ./assets /srv/assets
 COPY ./src /srv/src
-COPY ./gulpfile.js /srv/gulpfile.js
 
-ENV PAGE_TITLE $PAGE_TITLE
-ENV BASE_PATH $BASE_PATH
-ENV IS_LOGO_PNG $IS_LOGO_PNG
-
-RUN npm run build
-
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /srv/build /usr/share/nginx/html
+COPY ./scripts/docker-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT [ "sh", "/entrypoint.sh" ]
