@@ -10,6 +10,7 @@ const babel = require('gulp-babel');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const handlebars = require('gulp-compile-handlebars');
+const fs = require('fs');
 
 sass.compiler = require('node-sass');
 
@@ -52,8 +53,17 @@ gulp.task('favicon', () => {
 });
 
 gulp.task('logo', () => {
-    gulp.src('./assets/logo.png').pipe(gulp.dest('./build'));
-    return gulp.src('./assets/logo.svg').pipe(gulp.dest('./build'));
+    const files = [];
+
+    if(fs.existsSync('./assets/logo.png')){
+        files.push('./assets/logo.png');
+    }
+
+    if(fs.existsSync('./assets/logo.svg')){
+        files.push('./assets/logo.svg');
+    }
+
+    return gulp.src(files).pipe(gulp.dest('./build'));
 });
 
 gulp.task('build', gulp.parallel('favicon', 'logo', 'html', 'sass', 'scripts'));
