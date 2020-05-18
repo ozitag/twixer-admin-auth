@@ -1,0 +1,46 @@
+.page {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  &__main {
+    flex: 1 0 auto;
+    min-height: 1px;
+    position: relative;
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    position: relative;
+  }
+}
+
+.logo {
+  width: 200px;
+  margin-bottom: 40px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  padding: 100px 0;
+  min-height: calc(100vh - 140px);
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
