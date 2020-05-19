@@ -11,6 +11,10 @@ const validators = {
     },
 };
 
+function deleteElement(el) {
+    el.parentNode.removeChild(el);
+}
+
 class LoginForm {
     constructor(nodeElement) {
         this.nodeElement = nodeElement;
@@ -73,9 +77,7 @@ class LoginForm {
 
         if (validators.required(loginValue)) {
             errors.login = requiredMessage;
-        }
-
-        if (validators.email(loginValue)) {
+        } else if (validators.email(loginValue)) {
             errors.login = 'Неверный формат email';
         }
 
@@ -86,21 +88,49 @@ class LoginForm {
         return errors;
     }
 
+    buildErrorHtml(parent, error) {
+        const container = document.createElement('span');
+        container.classList.add('form__error');
+        container.innerText = error;
+        parent.appendChild(container);
+    }
+
+    removeErrorsHtml() {
+        const errors = document.querySelectorAll('.form__error');
+        if (!errors) return;
+        errors.forEach(error => {
+            deleteElement(error);
+        })
+    }
+
     init() {
         this.nodeElement.addEventListener('submit', e => {
             e.preventDefault();
 
             const errors = this.validate(this.loginField.value, this.passwordField.value);
             console.log('errors', errors);
+            const loginContainer = this.loginField.parentNode;
+            const passwordContainer = this.passwordField.parentNode;
 
             if (errors.login) {
+                const loginError = loginContainer.querySelector('.form__error');
+                if(!loginError) {
+                    this.buildErrorHtml(loginContainer, errors.login)
+                } else if (loginError.innerText !== errors.login) {
+                    loginError.innerText = errors.login;
+                }
                 return new Error(errors.login);
             }
 
             if (errors.password) {
+                const passwordError = passwordContainer.querySelector('.form__error');
+                if(!passwordError) {
+                    this.buildErrorHtml(passwordContainer, errors.password)
+                }
                 return new Error(errors.password);
             }
 
+            this.removeErrorsHtml();
             this.submit();
         })
     }

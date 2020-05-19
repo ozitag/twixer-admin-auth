@@ -4,6 +4,10 @@
     padding: 30px 0;
     display: flex;
     justify-content: space-between;
+
+    @include mobile {
+      padding: 20px;
+    }
   }
 
   &__left {

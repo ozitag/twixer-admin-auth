@@ -1,0 +1,93 @@
+/*====================================================*/
+/*=============== Media breakpoints ==================*/
+/*====================================================*/
+
+@mixin smallWidget(){
+  .widget._small &{
+    @content;
+  }
+}
+
+@mixin middleWidget(){
+  .widget._middle &{
+    @content;
+  }
+}
+
+@mixin desktop() {
+  @media (min-width: $laptopMedia + 1) {
+    @content;
+  }
+}
+
+@mixin no-desktop() {
+  @media (max-width: $laptopMedia) {
+    @content;
+  }
+}
+
+@mixin laptop() {
+  @media (min-width: $tabletMedia + 1) and (max-width: $laptopMedia) {
+    @content;
+  }
+}
+
+@mixin laptop-and-desktop() {
+  @media (min-width: $tabletMedia + 1) {
+    @content;
+  }
+}
+
+@mixin tablet() {
+  @media (min-width: $mobileMedia + 1) and (max-width: $tabletMedia) {
+    @content;
+  }
+}
+
+@mixin smallTablet() {
+  @media (min-width: $mobileMedia + 1) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin smallTablet-and-mobile() {
+  @media (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin tablet-and-laptop() {
+  @media (min-width: $mobileMedia + 1) and (max-width: $laptopMedia) {
+    @content;
+  }
+}
+
+@mixin tablet-and-mobile() {
+  @media (max-width: $tabletMedia) {
+    @content;
+  }
+}
+
+@mixin mobile() {
+  @media (max-width: $mobileMedia) {
+    @content;
+  }
+}
+
+@mixin no-mobile {
+  @media (min-width: $mobileMedia + 1) {
+    @content;
+  }
+}
+
+@mixin mobile375(){
+  @media (max-width: 412px) and (min-width: 375px) {
+    @content;
+  }
+}
+
+@mixin mobile320(){
+  @media (max-width: 374px) {
+    @content;
+  }
+}

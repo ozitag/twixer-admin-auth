@@ -12,6 +12,7 @@
   width: 100%;
 
   &__field {
+    position: relative;
     width: 100%;
 
     &:not(:last-child) {
@@ -70,8 +71,8 @@
 
       &:before {
         content: '';
-        height: 15px;
-        width: 15px;
+        height: 18px;
+        width: 18px;
         border-width: 3px;
         border-style: solid;
         border-color: rgba(255,255,255,.75) rgba(255,255,255,.75) rgba(255,255,255,.25) rgba(255,255,255,.25);
@@ -79,6 +80,15 @@
         animation: clockwise 1s linear infinite;
       }
     }
+  }
+
+  &__error {
+    position: absolute;
+    top: 100%;
+    margin-top: 2px;
+    font-size: 12px;
+    color: red;
+    left: 0;
   }
 }
 
