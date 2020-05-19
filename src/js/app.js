@@ -121,6 +121,7 @@ class LoginForm {
     init() {
         this.nodeElement.addEventListener('submit', e => {
             e.preventDefault();
+            this.removeErrorsHtml();
 
             const errors = this.validate(this.loginField.value, this.passwordField.value);
             console.log('errors', errors);
@@ -139,7 +140,6 @@ class LoginForm {
                 return new Error(errors.password);
             }
 
-            this.removeErrorsHtml();
             this.submit();
         })
     }
