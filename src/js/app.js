@@ -11,30 +11,13 @@ const validators = {
     },
 };
 
-function deleteElement(el) {
-    el.parentNode.removeChild(el);
-}
-
 class LoginForm {
-    constructor(nodeElement) {
-        this.nodeElement = nodeElement;
+    constructor(el) {
+        this.form = el;
 
-        this.loginField = this.nodeElement.elements.login;
-        if (!this.loginField) {
-            throw new Error('Поле ввода логина не найдено');
-        }
-
-        this.passwordField = this.nodeElement.elements.password;
-        if (!this.passwordField) {
-            throw new Error('Поле ввода пароля не найдено');
-        }
-
-        this.submitButton = this.nodeElement.querySelector('.form__button');
-        if (!this.submitButton) {
-            throw new Error('Кнопка субмита не найдена');
-        }
-
-        this.form = document.querySelector('.form');
+        this.loginField = this.form.elements.login;
+        this.passwordField = this.form.elements.password;
+        this.submitButton = this.form.querySelector('.form__button');
 
         this.init();
     }
@@ -54,17 +37,11 @@ class LoginForm {
     }
 
     submit() {
-        const login = this.loginField.value;
-        const password = this.passwordField.value;
-
-        const data = {
-            login: login,
-            password: password,
-        };
+        const values = this.getFormValues();
 
         fetch('https://httpbin.org/post', {
             method: 'POST',
-            body: JSON.stringify(data)
+            body: JSON.stringify(values)
         }).then(response => {
             this.addSubmitting();
             return response.json();
@@ -78,69 +55,54 @@ class LoginForm {
         });
     }
 
-    validate(loginValue, passwordValue) {
+    validate() {
+        const values = this.getFormValues()
         const errors = {};
 
-        if (validators.required(loginValue)) {
+        if (validators.required(values.login)) {
             errors.login = requiredMessage;
-        } else if (validators.email(loginValue)) {
+        } else if (validators.email(values.login)) {
             errors.login = 'Неверный формат email';
         }
 
-        if (validators.required(passwordValue)) {
+        if (validators.required(values.password)) {
             errors.password = requiredMessage;
         }
 
         return errors;
     }
 
-    buildErrorHtml(parent, error) {
-        const container = document.createElement('span');
-        container.classList.add('form__error');
-        container.innerText = error;
-        parent.appendChild(container);
+    getInputCollection() {
+        return  this.form.querySelectorAll('input');
     }
 
-    removeErrorsHtml() {
-        const errors = document.querySelectorAll('.form__error');
-        if (!errors) return;
-        errors.forEach(error => {
-            deleteElement(error);
+    getFormValues() {
+        const values = {};
+
+        this.getInputCollection().forEach(input => {
+            values[input.name] = input.value;
+        })
+
+        return values;
+    }
+
+    syncErrors(errors){
+        this.getInputCollection().forEach(input => {
+            input.nextElementSibling.textContent = errors[input.name] || '';
         })
     }
 
-    getError(container, error) {
-        const errorElement = container.querySelector('.form__error');
-        if (!errorElement) {
-            this.buildErrorHtml(container, error);
-        } else if (errorElement.innerText !== error) {
-            errorElement.innerText = error;
-        }
-    }
-
     init() {
-        this.nodeElement.addEventListener('submit', e => {
+        this.form.addEventListener('submit', e => {
             e.preventDefault();
-            this.removeErrorsHtml();
 
-            const errors = this.validate(this.loginField.value, this.passwordField.value);
-            console.log('errors', errors);
-            const loginContainer = this.loginField.parentNode;
-            const passwordContainer = this.passwordField.parentNode;
+            const errors = this.validate();
 
-            if (errors.login && errors.password) {
-                this.getError(loginContainer, errors.login)
-                this.getError(passwordContainer, errors.password)
-                return new Error(errors);
-            } else if (errors.login) {
-                this.getError(loginContainer, errors.login)
-                return new Error(errors.login);
-            } else if (errors.password) {
-                this.getError(passwordContainer, errors.password)
-                return new Error(errors.password);
+            this.syncErrors(errors);
+
+            if (Object.keys(errors).length === 0) {
+                this.submit();
             }
-
-            this.submit();
         })
     }
 }
@@ -148,11 +110,6 @@ class LoginForm {
 class LoginFormUI {
     static init() {
         document.querySelectorAll('.js-login-form').forEach(elem => {
-            if (elem.dataset.initialized) {
-                return;
-            }
-
-            elem.dataset.initialized = true;
             new LoginForm(elem);
         })
     }
