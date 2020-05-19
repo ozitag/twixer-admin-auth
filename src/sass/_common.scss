@@ -11,6 +11,21 @@
 }
 
 body {
+  font-family: 'Montserrat',
+  -apple-system,
+  'BlickMacSystemFont',
+  'Segoe UI',
+  'Roboto',
+  'Oxygen',
+  'Ubuntu',
+  'Cantarell',
+  'Fira Sans',
+  'Droid Sans',
+  'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   min-width: 320px;
   letter-spacing: 0.01em;
   font-size: 16px;
