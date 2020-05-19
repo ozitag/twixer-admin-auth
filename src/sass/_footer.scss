@@ -1,6 +1,6 @@
 .footer {
   background-color: $color-white;
-  font-size: 14px;
+  font-size: 16px;
 
   &__inner {
     padding: 30px 0;
@@ -9,6 +9,17 @@
 
     @include mobile {
       padding: 20px;
+    }
+
+    @include mobile320 {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__left {
+    @include mobile320 {
+      width: 100%;
+      margin-bottom: 15px;
     }
   }
 

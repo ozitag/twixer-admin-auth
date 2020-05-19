@@ -14,11 +14,15 @@
     flex: 1 0 auto;
     min-height: 1px;
     position: relative;
+    padding-bottom: 60px;
   }
 
   &__footer {
+    position: absolute;
     flex-shrink: 0;
-    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }
 
@@ -36,7 +40,7 @@
   display: flex;
   align-items: center;
   padding: 100px 0;
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 60px);
 
   @include laptop {
     padding: 80px 0;

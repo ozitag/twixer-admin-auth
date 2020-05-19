@@ -7,6 +7,10 @@
   margin: 0 auto;
   background-color: $color-white;
   border-radius: 10px;
+
+  @include mobile320 {
+    padding: 15px;
+  }
 }
 
 .form {
@@ -18,7 +22,7 @@
     width: 100%;
 
     &:not(:last-child) {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
   }
 
@@ -28,6 +32,12 @@
     right: 10px;
     width: 25px;
     height: 25px;
+    z-index: 0;
+    pointer-events: none;
+
+    img {
+      z-index: 0;
+    }
   }
 
   &__label {
@@ -35,6 +45,7 @@
     margin-bottom: 5px;
     font-size: 16px;
     line-height: 18px;
+    cursor: pointer;
   }
 
   &__input {
@@ -48,7 +59,7 @@
     border: 1px solid $color-border;
     cursor: pointer;
 
-    &:hover, &:focus {
+    &:focus {
       border-color: rgba(221, 105, 0, 1);
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     }
@@ -63,9 +74,9 @@
     display: inline-flex;
     font-size: 18px;
     line-height: 1;
-    padding: 15px;
+    padding: 15px 40px;
     margin: 15px auto 0;
-    border: 2px solid $color-orange;
+    border: 2px solid $color-brand;
     border-radius: 10px;
     background-color: transparent;
     transition: 0.3s ease;
@@ -73,14 +84,14 @@
 
     &:hover {
       color: $color-white;
-      background-color: $color-orange;
+      background-color: $color-brand;
     }
   }
 
   &__error {
     position: absolute;
     top: 100%;
-    margin-top: 2px;
+    margin-top: -2px;
     font-size: 12px;
     color: red;
     left: 0;

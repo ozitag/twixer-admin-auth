@@ -3,7 +3,7 @@
 
 const EMAIL_REGEXP = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-const requiredMessage = 'Вы не заполнили поле';
+const requiredMessage = 'The field is required';
 
 const validators = {
     required(value) {
@@ -58,8 +58,6 @@ class LoginForm {
 
         if (validators.required(values.login)) {
             errors.login = requiredMessage;
-        } else if (validators.email(values.login)) {
-            errors.login = 'Неверный формат email';
         }
 
         if (validators.required(values.password)) {
