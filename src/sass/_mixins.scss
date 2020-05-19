@@ -1,3 +1,23 @@
+@mixin align($horizontal: true, $vertical: true, $transform: null) {
+  position: absolute;
+
+  @if ($horizontal) {
+    left: 50%;
+  }
+  @if ($vertical) {
+    top: 50%;
+  }
+
+  @if ($horizontal and $vertical) {
+    transform: translate(-50%, -50%), $transform;
+  } @else if ($horizontal) {
+    transform: translate(-50%, 0), $transform;
+  } @else {
+    transform: translate(0, -50%), $transform;
+  }
+}
+
+
 /*====================================================*/
 /*=============== Media breakpoints ==================*/
 /*====================================================*/

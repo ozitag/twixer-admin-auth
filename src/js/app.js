@@ -34,17 +34,23 @@ class LoginForm {
             throw new Error('Кнопка субмита не найдена');
         }
 
+        this.form = document.querySelector('.form');
+
         this.init();
     }
 
     addSubmitting() {
-        this.submitButton.classList.add('submitting');
+        this.form.classList.add('submitting');
         this.submitButton.disabled = true;
+        this.loginField.disabled = true;
+        this.passwordField.disabled = true;
     }
 
     removeSubmitting() {
-        this.submitButton.classList.remove('submitting');
+        this.form.classList.remove('submitting');
         this.submitButton.disabled = false;
+        this.loginField.disabled = false;
+        this.passwordField.disabled = false;
     }
 
     submit() {
@@ -65,7 +71,7 @@ class LoginForm {
         }).then(() => {
             setTimeout(() => {
                 this.removeSubmitting();
-            }, 2000)
+            }, 3000)
         }).catch((errors) => {
             this.removeSubmitting();
             throw new Error(errors);

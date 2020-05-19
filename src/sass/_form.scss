@@ -10,6 +10,44 @@
 
 .form {
   width: 100%;
+  position: relative;
+
+  &.submitting {
+    filter: grayscale(100%);
+
+    &:before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      content: '';
+      height: 80px;
+      width: 80px;
+      border-width: 3px;
+      border-style: solid;
+      border-color: rgba(221, 105, 0, 1) rgba(221, 105, 0, 1) rgba(221, 105, 0, .25) rgba(221, 105, 0, .25);
+      border-radius: 100%;
+      animation: clockwise 1s linear infinite;
+      z-index: 2;
+    }
+
+    .form__button {
+      cursor: default;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .form__input {
+      cursor: default;
+
+      &:hover, &:focus {
+        border-color: #d2d6de;
+        box-shadow: none;
+      }
+    }
+  }
+
 
   &__field {
     position: relative;
@@ -36,6 +74,7 @@
     font-size: 18px;
     line-height: 1;
     border: 1px solid #d2d6de;
+    cursor: pointer;
 
     &:hover, &:focus {
       border-color: rgba(221, 105, 0, 1);
@@ -63,23 +102,6 @@
     &:hover {
       background-color: #DD6900;
     }
-
-    &.submitting {
-      font-size: 0;
-      background-color: #DD6900;
-      cursor: default;
-
-      &:before {
-        content: '';
-        height: 18px;
-        width: 18px;
-        border-width: 3px;
-        border-style: solid;
-        border-color: rgba(255,255,255,.75) rgba(255,255,255,.75) rgba(255,255,255,.25) rgba(255,255,255,.25);
-        border-radius: 100%;
-        animation: clockwise 1s linear infinite;
-      }
-    }
   }
 
   &__error {
@@ -93,7 +115,11 @@
 }
 
 @keyframes clockwise {
+  from {
+    transform: translate(-50%, -50%) rotate(0) translateZ(0);
+  }
+
   to {
-    transform: rotate(360deg) translateZ(0);
+    transform: translate(-50%, -50%) rotate(360deg) translateZ(0);
   }
 }
