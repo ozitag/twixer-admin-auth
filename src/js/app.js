@@ -103,6 +103,15 @@ class LoginForm {
         })
     }
 
+    getError(container, error) {
+        const errorElement = container.querySelector('.form__error');
+        if (!errorElement) {
+            this.buildErrorHtml(container, error);
+        } else if (errorElement.innerText !== error) {
+            errorElement.innerText = error;
+        }
+    }
+
     init() {
         this.nodeElement.addEventListener('submit', e => {
             e.preventDefault();
@@ -112,21 +121,15 @@ class LoginForm {
             const loginContainer = this.loginField.parentNode;
             const passwordContainer = this.passwordField.parentNode;
 
-            if (errors.login) {
-                const loginError = loginContainer.querySelector('.form__error');
-                if(!loginError) {
-                    this.buildErrorHtml(loginContainer, errors.login)
-                } else if (loginError.innerText !== errors.login) {
-                    loginError.innerText = errors.login;
-                }
+            if (errors.login && errors.password) {
+                this.getError(loginContainer, errors.login)
+                this.getError(passwordContainer, errors.password)
+                return new Error(errors);
+            } else if (errors.login) {
+                this.getError(loginContainer, errors.login)
                 return new Error(errors.login);
-            }
-
-            if (errors.password) {
-                const passwordError = passwordContainer.querySelector('.form__error');
-                if(!passwordError) {
-                    this.buildErrorHtml(passwordContainer, errors.password)
-                }
+            } else if (errors.password) {
+                this.getError(passwordContainer, errors.password)
                 return new Error(errors.password);
             }
 
