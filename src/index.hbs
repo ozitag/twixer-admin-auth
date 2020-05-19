@@ -42,11 +42,17 @@
                        <form class="form js-login-form" action="https://httpbin.org/post" enctype="application/x-www-form-urlencoded" method="POST">
                            <div class="form__field">
                                <label for="login" class="form__label">Login</label>
+                               <div class="form__input-icon">
+                                   <img src="{{base_path}}/mail.svg"/>
+                               </div>
                                <input class="form__input" name="login" type="text" placeholder="Login"/>
                                <span class="form__error"></span>
                            </div>
                            <div class="form__field">
                                <label for="password" class="form__label">Password</label>
+                               <div class="form__input-icon">
+                                   <img src="{{base_path}}/lock.svg"/>
+                               </div>
                                <input class="form__input" name="password" type="password" placeholder="Password"/>
                                <span class="form__error"></span>
                            </div>

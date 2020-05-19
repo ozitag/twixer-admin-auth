@@ -14,6 +14,10 @@ const fs = require('fs');
 
 sass.compiler = require('node-sass');
 
+gulp.task('img', () => {
+    return gulp.src('./assets/images/*.svg').pipe(gulp.dest('./build'));
+});
+
 gulp.task('sass', () => {
     return gulp.src('./src/sass/**/*.scss')
         .pipe(sass().on('error', sass.logError))
@@ -38,11 +42,20 @@ gulp.task('html', function () {
 
 gulp.task('scripts', () => {
     return gulp.src('src/js/app.js').pipe(babel({
-        presets: ['@babel/env']
+        presets: [[
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "entry", // alternative mode: "entry"
+                "corejs": 3, // default would be 2
+                "targets": "> 0.25%, not dead"
+                // set your own target environment here (see Browserslist)
+            }
+        ]]
     })).pipe(rename('app.js')).pipe(uglify()).pipe(gulp.dest('build'))
 });
 
 gulp.task('watch', () => {
+    watch('src/*.svg', gulp.series('img'));
     watch('src/*.hbs', gulp.series('html'));
     watch('src/sass/**/*.scss', gulp.series('sass'));
     watch('src/js/**/*.js', gulp.series('scripts'));
@@ -66,6 +79,6 @@ gulp.task('logo', () => {
     return gulp.src(files).pipe(gulp.dest('./build'));
 });
 
-gulp.task('build', gulp.parallel('favicon', 'logo', 'html', 'sass', 'scripts'));
+gulp.task('build', gulp.parallel('img', 'favicon', 'logo', 'html', 'sass', 'scripts'));
 gulp.task('dev', gulp.parallel('build', 'watch'));
 gulp.task('default', gulp.parallel('build'));

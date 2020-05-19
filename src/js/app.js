@@ -1,3 +1,6 @@
+// import "regenerator-runtime/runtime";
+// import "core-js"; // or a more selective import such as "core-js/es/array"
+
 const EMAIL_REGEXP = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const requiredMessage = 'Вы не заполнили поле';
@@ -36,23 +39,21 @@ class LoginForm {
         this.passwordField.disabled = false;
     }
 
-    submit() {
+     submit() {
         const values = this.getFormValues();
 
-        fetch('https://httpbin.org/post', {
+         this.addSubmitting();
+         fetch('https://httpbin.org/post', {
             method: 'POST',
             body: JSON.stringify(values)
-        }).then(response => {
-            this.addSubmitting();
-            return response.json();
-        }).then(() => {
-            setTimeout(() => {
-                this.removeSubmitting();
-            }, 3000)
-        }).catch((errors) => {
-            this.removeSubmitting();
-            throw new Error(errors);
-        });
+        }).then((response) => {
+            localStorage.setItem('accessToken', response.access_token);
+            localStorage.setItem('refreshToken', response.refresh_token);
+        }).catch(() => {
+             console.log('123');
+         }).finally(() => {
+             this.removeSubmitting();
+         });
     }
 
     validate() {
