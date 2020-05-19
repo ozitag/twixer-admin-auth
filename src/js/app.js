@@ -17,26 +17,17 @@ const validators = {
 class LoginForm {
     constructor(el) {
         this.form = el;
-
-        this.loginField = this.form.elements.login;
-        this.passwordField = this.form.elements.password;
-        this.submitButton = this.form.querySelector('.form__button');
+        this.loader = document.querySelector('.loader');
 
         this.init();
     }
 
     addSubmitting() {
-        this.form.classList.add('submitting');
-        this.submitButton.disabled = true;
-        this.loginField.disabled = true;
-        this.passwordField.disabled = true;
+        this.loader.classList.add('show');
     }
 
     removeSubmitting() {
-        this.form.classList.remove('submitting');
-        this.submitButton.disabled = false;
-        this.loginField.disabled = false;
-        this.passwordField.disabled = false;
+        this.loader.classList.remove('show');
     }
 
      submit() {
@@ -47,10 +38,15 @@ class LoginForm {
             method: 'POST',
             body: JSON.stringify(values)
         }).then((response) => {
-            localStorage.setItem('accessToken', response.access_token);
-            localStorage.setItem('refreshToken', response.refresh_token);
-        }).catch(() => {
-             console.log('123');
+            if (response.access_token) {
+                localStorage.setItem('accessToken', response.access_token);
+            }
+
+             if (response.refresh_token) {
+                 localStorage.setItem('accessToken', response.refresh_token);
+             }
+        }).catch((error) => {
+             console.error(error);
          }).finally(() => {
              this.removeSubmitting();
          });

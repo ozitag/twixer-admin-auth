@@ -1,53 +1,17 @@
 .form-wrapper {
+  position: relative;
   display: flex;
   width: 100%;
   max-width: 450px;
   padding: 25px;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: $color-white;
   border-radius: 10px;
 }
 
 .form {
   width: 100%;
   position: relative;
-
-  &.submitting {
-    filter: grayscale(100%);
-
-    &:before {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      content: '';
-      height: 80px;
-      width: 80px;
-      border-width: 3px;
-      border-style: solid;
-      border-color: rgba(221, 105, 0, 1) rgba(221, 105, 0, 1) rgba(221, 105, 0, .25) rgba(221, 105, 0, .25);
-      border-radius: 100%;
-      animation: clockwise 1s linear infinite;
-      z-index: 2;
-    }
-
-    .form__button {
-      cursor: default;
-
-      &:hover {
-        background-color: transparent;
-      }
-    }
-
-    .form__input {
-      cursor: default;
-
-      &:hover, &:focus {
-        border-color: #d2d6de;
-        box-shadow: none;
-      }
-    }
-  }
-
 
   &__field {
     position: relative;
@@ -81,7 +45,7 @@
     border-radius: 4px;
     font-size: 18px;
     line-height: 1;
-    border: 1px solid #d2d6de;
+    border: 1px solid $color-border;
     cursor: pointer;
 
     &:hover, &:focus {
@@ -101,14 +65,15 @@
     line-height: 1;
     padding: 15px;
     margin: 15px auto 0;
-    border: 1px solid #DD6900;
+    border: 2px solid $color-orange;
     border-radius: 10px;
     background-color: transparent;
     transition: 0.3s ease;
     cursor: pointer;
 
     &:hover {
-      background-color: #DD6900;
+      color: $color-white;
+      background-color: $color-orange;
     }
   }
 
@@ -119,15 +84,5 @@
     font-size: 12px;
     color: red;
     left: 0;
-  }
-}
-
-@keyframes clockwise {
-  from {
-    transform: translate(-50%, -50%) rotate(0) translateZ(0);
-  }
-
-  to {
-    transform: translate(-50%, -50%) rotate(360deg) translateZ(0);
   }
 }

@@ -1,4 +1,6 @@
 .footer {
+  background-color: $color-white;
+  font-size: 14px;
 
   &__inner {
     padding: 30px 0;
@@ -10,8 +12,13 @@
     }
   }
 
-  &__left {
-    font-size: 14px;
-    color: rgb(168, 172, 185);
+  &__link {
+    text-decoration: none;
+    color: $color-black;
+    transition: .2s ease;
+
+    &:hover {
+      color: $color-orange;
+    }
   }
 }

@@ -31,6 +31,7 @@ gulp.task('html', function () {
         title: process.env.PAGE_TITLE || 'OZiTAG',
         base_path: process.env.BASE_PATH || '',
         is_logo_png: process.env.IS_LOGO_PNG || false,
+        brand_color: process.env.BRAND_COLOR || '#DD6900',
     };
 
     return gulp.src('src/index.hbs')
