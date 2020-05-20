@@ -36,15 +36,16 @@ class LoginForm {
          this.addSubmitting();
          fetch('https://presetbox.dev.ozitag.com/api/oauth/token', {
             method: 'POST',
-            body: JSON.stringify(values)
+            body: JSON.stringify(values),
+             mode: 'cors'
         }).then((response) => {
-             if (response.access_token) {
+             /*if (response.access_token) {
                 localStorage.setItem('accessToken', response.access_token);
             }
 
              if (response.refresh_token) {
                  localStorage.setItem('accessToken', response.refresh_token);
-             }
+             }*/
         }).catch((error) => {
              console.error(error);
          }).finally(() => {

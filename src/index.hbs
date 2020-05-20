@@ -31,10 +31,7 @@
                <div class="section__inner">
                    <div class="logo">
                        {{#if is_logo_png}}
-                           <picture>
-                               <sourse srcset="{{base_path}}/logo@2x.png 2x, {{base_path}}/logo.png 1x" />
-                               <img src="{{base_path}}/logo.png" />
-                           </picture>
+                           <img src="{{base_path}}/logo.png"/>
                        {{else}}
                            <img src="{{base_path}}/logo.svg"/>
                        {{/if}}
