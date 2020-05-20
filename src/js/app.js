@@ -57,7 +57,7 @@ class LoginForm {
          }
 
          this.addSubmitting();
-         fetch('https://presetbox.dev.ozitag.com/api/oauth/token', {
+         fetch('/api/oauth/token', {
             method: 'POST',
             body: JSON.stringify(data),
              mode: "cors",
@@ -80,22 +80,21 @@ class LoginForm {
             this.commonError.textContent = getCommonErrorLabel(response.status);
             throw new Error(getCommonErrorLabel(response.status));
          }).then(result => {
-             const error = 'Invalid authentication response'
              if (isValidBody(result)) {
                  localStorage.setItem('accessToken', result.access_token);
                  localStorage.setItem('refreshToken', result.refresh_token);
                  window.location.href = '/admin'
              } else {
+                 const error = 'Invalid authentication response';
                  this.commonError.textContent = error;
                  throw new Error(error);
              }
          }).catch((error) => {
              if (error instanceof Error) {
                  if (error.toString().includes('Failed to fetch')) {
-                     this.commonError.textContent = 'Service is not available'
+                     this.commonError.textContent = 'Service is not available';
                  }
              }
-             console.error(error);
          }).finally(() => {
              this.removeSubmitting();
          });
