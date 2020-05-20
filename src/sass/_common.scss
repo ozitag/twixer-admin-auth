@@ -100,4 +100,8 @@ figure {
     max-width: 100%;
     padding: 0 20px;
   }
+
+  @include mobile{
+    padding: 0 20px;
+  }
 }
