@@ -14,10 +14,26 @@ const validators = {
     },
 };
 
+function getCommonErrorLabel(code) {
+    switch (code) {
+        case 400 < code < 500 : return "Invalid Server Response";
+        case 499 < code : return "Server Internal Error";
+    }
+}
+
+function isValidBody(body) {
+    if (body.access_token && body.access_token) {
+        return body;
+    }
+
+    return false;
+}
+
 class LoginForm {
     constructor(el) {
         this.form = el;
         this.loader = document.querySelector('.loader');
+        this.commonError = this.form.querySelector('.form__common-error');
 
         this.init();
     }
@@ -32,21 +48,53 @@ class LoginForm {
 
      submit() {
          const values = this.getFormValues();
+         const data = {
+             grant_type: "password",
+             client_id: "1",
+             password: values.password,
+             username: values.login,
+             provider: "administrators",
+         }
 
          this.addSubmitting();
          fetch('https://presetbox.dev.ozitag.com/api/oauth/token', {
             method: 'POST',
-            body: JSON.stringify(values),
-             mode: 'cors'
+            body: JSON.stringify(data),
+             mode: "cors",
+             headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+             }
         }).then((response) => {
-             /*if (response.access_token) {
-                localStorage.setItem('accessToken', response.access_token);
+            if (response.ok) {
+                this.commonError.textContent = '';
+                return response.json();
             }
 
-             if (response.refresh_token) {
-                 localStorage.setItem('accessToken', response.refresh_token);
-             }*/
-        }).catch((error) => {
+            if (response.status === 400) {
+                this.commonError.textContent = '';
+                this.form.elements.password.nextElementSibling.textContent = 'Invalid credentials';
+                throw new Error('Invalid credentials');
+            }
+
+            this.commonError.textContent = getCommonErrorLabel(response.status);
+            throw new Error(getCommonErrorLabel(response.status));
+         }).then(result => {
+             const error = 'Invalid authentication response'
+             if (isValidBody(result)) {
+                 localStorage.setItem('accessToken', result.access_token);
+                 localStorage.setItem('refreshToken', result.refresh_token);
+                 window.location.href = '/admin'
+             } else {
+                 this.commonError.textContent = error;
+                 throw new Error(error);
+             }
+         }).catch((error) => {
+             if (error instanceof Error) {
+                 if (error.toString().includes('Failed to fetch')) {
+                     this.commonError.textContent = 'Service is not available'
+                 }
+             }
              console.error(error);
          }).finally(() => {
              this.removeSubmitting();
@@ -86,6 +134,8 @@ class LoginForm {
         this.getInputCollection().forEach(input => {
             input.nextElementSibling.textContent = errors[input.name] || '';
         })
+
+        this.commonError.textContent = '';
     }
 
     init() {
