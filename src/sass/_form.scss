@@ -59,9 +59,12 @@
     border: 1px solid $color-border;
     cursor: pointer;
 
+    @include placeholder {
+      font: inherit;
+    }
+
     &:focus {
-      border-color: rgba(221, 105, 0, 1);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      border-color: $color-brand;
     }
   }
 
