@@ -73,6 +73,10 @@ gulp.task('logo', () => {
         files.push('./assets/logo.png');
     }
 
+    if(fs.existsSync('./assets/logo@2x.png')){
+        files.push('./assets/logo@2x.png');
+    }
+
     if(fs.existsSync('./assets/logo.svg')){
         files.push('./assets/logo.svg');
     }

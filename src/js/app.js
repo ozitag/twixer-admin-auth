@@ -31,14 +31,14 @@ class LoginForm {
     }
 
      submit() {
-        const values = this.getFormValues();
+         const values = this.getFormValues();
 
          this.addSubmitting();
-         fetch('https://httpbin.org/post', {
+         fetch('https://presetbox.dev.ozitag.com/api/oauth/token', {
             method: 'POST',
             body: JSON.stringify(values)
         }).then((response) => {
-            if (response.access_token) {
+             if (response.access_token) {
                 localStorage.setItem('accessToken', response.access_token);
             }
 

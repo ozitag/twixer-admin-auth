@@ -32,11 +32,13 @@
 }
 
 .logo {
-  width: 200px;
+  max-width: 150px;
+  max-height: 150px;
   margin-bottom: 30px;
 
-  @include mobile320 {
-    width: 100px;
+  @include mobile {
+    max-width: 100px;
+    max-height: 100px;
     margin-bottom: 20px;
   }
 
