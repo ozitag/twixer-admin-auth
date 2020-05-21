@@ -28,7 +28,7 @@
 
   &__input-icon {
     position: absolute;
-    bottom: 10px;
+    top: 28px;
     right: 10px;
     width: 25px;
     height: 25px;
@@ -54,10 +54,14 @@
     padding: 10px 40px 10px 10px;
     box-sizing: border-box;
     border-radius: 4px;
-    font-size: 18px;
+    font-size: 12px;
     line-height: 1;
     border: 1px solid $color-border;
     cursor: pointer;
+
+    &--password{
+      font-size: 18px;
+    }
 
     @include placeholder {
       font: inherit;
