@@ -20,19 +20,10 @@
     @include mobile {
       padding: 10px 0;
     }
-
-    @include mobile320 {
-      flex-direction: column;
-    }
   }
 
   &__left {
     font-weight: bold;
-    @include mobile320 {
-      width: 100%;
-      margin-bottom: 15px;
-      text-align: center;
-    }
   }
 
   &__right {

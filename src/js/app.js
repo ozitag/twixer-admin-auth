@@ -3,184 +3,192 @@
 
 const EMAIL_REGEXP = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-const requiredMessage = 'The field is required';
+const requiredMessage = "The field is required";
 
 const validators = {
-    required(value) {
-        return !value.trim();
-    },
-    email(value) {
-        return !EMAIL_REGEXP.test(value);
-    },
+  required(value) {
+    return !value.trim();
+  },
+  email(value) {
+    return !EMAIL_REGEXP.test(value);
+  },
 };
 
-function updateViewportHeight () {
-    document.documentElement.style.setProperty('--vh', `${getViewportHeight()}px`);
+function updateViewportHeight() {
+  document.documentElement.style.setProperty(
+    "--vh",
+    `${getViewportHeight()}px`
+  );
 
-    function getViewportHeight () {
-        return window.innerHeight * 0.01;
-    }
+  function getViewportHeight() {
+    return window.innerHeight * 0.01;
+  }
 }
 
 function getCommonErrorLabel(code) {
-    if (code === 404) {
-        return 'Server not found'
-    } else if (code >= 400 && code < 500) {
-        return "Invalid Server Response"
-    } else if (code >= 500) {
-        return "Server Internal Error"
-    } else {
-        return "Unknown Error";
-    }
+  if (code === 404) {
+    return "Server not found";
+  } else if (code >= 400 && code < 500) {
+    return "Invalid Server Response";
+  } else if (code >= 500) {
+    return "Server Internal Error";
+  } else {
+    return "Unknown Error";
+  }
 }
 
 function isValidBody(body) {
-    if (body.access_token && body.access_token) {
-        return body;
-    }
+  if (body.access_token && body.access_token) {
+    return body;
+  }
 
-    return false;
+  return false;
 }
 
 class LoginForm {
-    constructor(el) {
-        this.form = el;
-        this.loader = document.querySelector('.loader');
-        this.commonError = this.form.querySelector('.form__common-error');
+  constructor(el) {
+    this.form = el;
+    this.loader = document.querySelector(".loader");
+    this.commonError = this.form.querySelector(".form__common-error");
 
-        this.init();
-    }
+    this.init();
+  }
 
-    addSubmitting() {
-        this.loader.classList.add('show');
-    }
+  addSubmitting() {
+    this.loader.classList.add("show");
+  }
 
-    removeSubmitting() {
-        this.loader.classList.remove('show');
-    }
+  removeSubmitting() {
+    this.loader.classList.remove("show");
+  }
 
-    submit() {
-        const values = this.getFormValues();
-        const data = {
-            grant_type: "password",
-            client_id: "1",
-            password: values.password,
-            username: values.login,
-            provider: "administrators",
+  submit() {
+    const values = this.getFormValues();
+    const data = {
+      grant_type: "password",
+      client_id: "1",
+      password: values.password,
+      username: values.login,
+      provider: "administrators",
+    };
+
+    this.addSubmitting();
+    fetch("/api/oauth/token", {
+      method: "POST",
+      body: JSON.stringify(data),
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          this.commonError.textContent = "";
+          return response.json();
         }
 
-        this.addSubmitting();
-        fetch('/api/oauth/token', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            mode: "cors",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            }
-        }).then((response) => {
-            if (response.ok) {
-                this.commonError.textContent = '';
-                return response.json();
-            }
-
-            if (response.status === 400) {
-                this.commonError.textContent = '';
-                this.form.elements.password.nextElementSibling.textContent = 'Invalid credentials';
-                throw new Error('Invalid credentials');
-            }
-
-            this.commonError.textContent = getCommonErrorLabel(response.status);
-            throw new Error(getCommonErrorLabel(response.status));
-        }).then(result => {
-            if (isValidBody(result)) {
-                localStorage.setItem('accessToken', result.access_token);
-                localStorage.setItem('refreshToken', result.refresh_token);
-                window.location.href = '/admin'
-            } else {
-                const error = 'Invalid authentication response';
-                this.commonError.textContent = error;
-                throw new Error(error);
-            }
-        }).catch((error) => {
-            if (error instanceof Error) {
-                if (error.toString().includes('Failed to fetch')) {
-                    this.commonError.textContent = 'Service is not available';
-                }
-            }
-        }).finally(() => {
-            this.removeSubmitting();
-        });
-    }
-
-    validate() {
-        const values = this.getFormValues()
-        const errors = {};
-
-        if (validators.required(values.login)) {
-            errors.login = requiredMessage;
+        if (response.status === 400) {
+          this.commonError.textContent = "";
+          this.form.elements.password.nextElementSibling.textContent =
+            "Invalid credentials";
+          throw new Error("Invalid credentials");
         }
 
-        if (validators.required(values.password)) {
-            errors.password = requiredMessage;
+        this.commonError.textContent = getCommonErrorLabel(response.status);
+        throw new Error(getCommonErrorLabel(response.status));
+      })
+      .then((result) => {
+        if (isValidBody(result)) {
+          localStorage.setItem("accessToken", result.access_token);
+          localStorage.setItem("refreshToken", result.refresh_token);
+          window.location.href = "/admin";
+        } else {
+          const error = "Invalid authentication response";
+          this.commonError.textContent = error;
+          throw new Error(error);
         }
+      })
+      .catch((error) => {
+        if (error instanceof Error) {
+          if (error.toString().includes("Failed to fetch")) {
+            this.commonError.textContent = "Service is not available";
+          }
+        }
+      })
+      .finally(() => {
+        this.removeSubmitting();
+      });
+  }
 
-        return errors;
+  validate() {
+    const values = this.getFormValues();
+    const errors = {};
+
+    if (validators.required(values.login)) {
+      errors.login = requiredMessage;
     }
 
-    getInputCollection() {
-        return this.form.querySelectorAll('input');
+    if (validators.required(values.password)) {
+      errors.password = requiredMessage;
     }
 
-    getFormValues() {
-        const values = {};
+    return errors;
+  }
 
-        this.getInputCollection().forEach(input => {
-            values[input.name] = input.value;
-        })
+  getInputCollection() {
+    return this.form.querySelectorAll("input");
+  }
 
-        return values;
-    }
+  getFormValues() {
+    const values = {};
 
-    syncErrors(errors) {
-        this.getInputCollection().forEach(input => {
-            input.nextElementSibling.textContent = errors[input.name] || '';
-        })
+    this.getInputCollection().forEach((input) => {
+      values[input.name] = input.value;
+    });
 
-        this.commonError.textContent = '';
-    }
+    return values;
+  }
 
-    init() {
-        this.form.addEventListener('submit', e => {
-            e.preventDefault();
+  syncErrors(errors) {
+    this.getInputCollection().forEach((input) => {
+      input.nextElementSibling.textContent = errors[input.name] || "";
+    });
 
-            const errors = this.validate();
+    this.commonError.textContent = "";
+  }
 
-            this.syncErrors(errors);
+  init() {
+    this.form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-            if (Object.keys(errors).length === 0) {
-                this.submit();
-            }
-        })
-    }
+      const errors = this.validate();
+
+      this.syncErrors(errors);
+
+      if (Object.keys(errors).length === 0) {
+        this.submit();
+      }
+    });
+  }
 }
 
 class LoginFormUI {
-    static init() {
-        document.querySelectorAll('.js-login-form').forEach(elem => {
-            new LoginForm(elem);
-        })
-    }
+  static init() {
+    document.querySelectorAll(".js-login-form").forEach((elem) => {
+      new LoginForm(elem);
+    });
+  }
 
-    static initOnLoad() {
-        document.addEventListener('DOMContentLoaded', this.init);
-    }
+  static initOnLoad() {
+    document.addEventListener("DOMContentLoaded", this.init);
+  }
 }
 
 updateViewportHeight();
-window.addEventListener('resize', () => {
-    updateViewportHeight();
-})
+window.addEventListener("resize", () => {
+  updateViewportHeight();
+});
 
 LoginFormUI.initOnLoad();
 window.LoginFormUI = LoginFormUI;

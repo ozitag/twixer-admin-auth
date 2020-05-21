@@ -28,10 +28,6 @@
     @include mobile {
       padding-bottom: 58px;
     }
-
-    @include mobile320 {
-      padding-bottom: 93px;
-    }
   }
 
   &__footer {
@@ -81,11 +77,6 @@
   @include mobile {
     padding: 30px 0;
     height: calc((var(--vh, 1vh) * 100) - 58px);
-  }
-
-  @include mobile320 {
-    padding: 15px 0;
-    height: calc((var(--vh, 1vh) * 100) - 93px);
   }
 
   &__inner {
