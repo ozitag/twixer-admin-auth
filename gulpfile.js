@@ -14,10 +14,6 @@ const fs = require("fs");
 
 sass.compiler = require("node-sass");
 
-gulp.task("img", () => {
-  return gulp.src("./assets/images/*.svg").pipe(gulp.dest("./build"));
-});
-
 gulp.task("sass", () => {
   return gulp
     .src("./src/sass/**/*.scss")
@@ -67,7 +63,6 @@ gulp.task("scripts", () => {
 });
 
 gulp.task("watch", () => {
-  watch("src/*.svg", gulp.series("img"));
   watch("src/*.hbs", gulp.series("html"));
   watch("src/sass/**/*.scss", gulp.series("sass"));
   watch("src/js/**/*.js", gulp.series("scripts"));
