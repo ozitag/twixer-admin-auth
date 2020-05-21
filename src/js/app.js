@@ -110,14 +110,12 @@ class LoginForm {
         }
       })
       .catch((error) => {
+        this.removeSubmitting();
         if (error instanceof Error) {
           if (error.toString().includes("Failed to fetch")) {
             this.commonError.textContent = "Service is not available";
           }
         }
-      })
-      .finally(() => {
-        this.removeSubmitting();
       });
   }
 
