@@ -14,6 +14,14 @@ const validators = {
     },
 };
 
+function updateViewportHeight () {
+    document.documentElement.style.setProperty('--vh', `${getViewportHeight()}px`);
+
+    function getViewportHeight () {
+        return window.innerHeight * 0.01;
+    }
+}
+
 function getCommonErrorLabel(code) {
     if (code === 404) {
         return 'Server not found'
@@ -168,6 +176,11 @@ class LoginFormUI {
         document.addEventListener('DOMContentLoaded', this.init);
     }
 }
+
+updateViewportHeight();
+window.addEventListener('resize', () => {
+    updateViewportHeight();
+})
 
 LoginFormUI.initOnLoad();
 window.LoginFormUI = LoginFormUI;
