@@ -86,9 +86,6 @@ gulp.task("logo", () => {
   return gulp.src(files).pipe(gulp.dest("./build"));
 });
 
-gulp.task(
-  "build",
-  gulp.parallel("img", "favicon", "logo", "html", "sass", "scripts")
-);
+gulp.task("build", gulp.parallel("favicon", "logo", "html", "sass", "scripts"));
 gulp.task("dev", gulp.parallel("build", "watch"));
 gulp.task("default", gulp.parallel("build"));
