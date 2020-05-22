@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{language}}">
+<html lang="{{#ifCond language 'RU'}}ru{{else}}en{{/ifCond}}">
 <head>
     <meta charset="utf-8">
     <title>{{ title }}</title>
@@ -47,7 +47,7 @@
                         </div>
                         <form class="form js-login-form">
                             <div class="form__field">
-                                <label for="login" class="form__label">{{#ifCond language 'ru'}}Логин{{else}}Login{{/ifCond}}</label>
+                                <label for="login" class="form__label">{{#ifCond language 'RU'}}Логин{{else}}Login{{/ifCond}}</label>
                                 <div class="form__input-wrapper">
                                     <div class="form__input-icon">
                                         <svg fill="gray" xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class="form__field">
-                                <label for="password" class="form__label">{{#ifCond language 'ru'}}Пароль{{else}}Password{{/ifCond}}</label>
+                                <label for="password" class="form__label">{{#ifCond language 'RU'}}Пароль{{else}}Password{{/ifCond}}</label>
                                 <div class="form__input-wrapper">
                                     <div class="form__input-icon">
                                         <svg fill="gray" xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +106,7 @@
                             <span class="form__common-error"></span>
                             <div class="form__bottom">
                                 <div class="form__loader" style=""></div>
-                                <button class="form__button" type="submit">{{#ifCond language 'ru'}}Войти{{else}}Authenticate{{/ifCond}}</button>
+                                <button class="form__button" type="submit">{{#ifCond language 'RU'}}Войти{{else}}Authenticate{{/ifCond}}</button>
                             </div>
                         </form>
                     </div>
