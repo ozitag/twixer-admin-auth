@@ -14,6 +14,12 @@
     <meta name="theme-color" content="#ffffff"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <script>
+        if (localStorage.accessToken) {
+            window.location.href = '/admin'
+        }
+    </script>
+
     <link href="//fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <style>
         div {
@@ -22,11 +28,6 @@
     </style>
     <link rel="stylesheet" href="{{base_path}}/app.css"/>
     <script src="{{base_path}}/app.js"></script>
-    <script>
-        if (localStorage.accessToken && localStorage.accessToken) {
-            window.location.href = '/admin'
-        }
-    </script>
 </head>
 <body class="page">
 <div class="page__inner">
@@ -47,7 +48,8 @@
                         </div>
                         <form class="form js-login-form">
                             <div class="form__field">
-                                <label for="login" class="form__label">{{#ifCond language 'RU'}}Логин{{else}}Login{{/ifCond}}</label>
+                                <label for="login" class="form__label">{{#ifCond language 'RU'}}
+                                    Логин{{else}}Login{{/ifCond}}</label>
                                 <div class="form__input-wrapper">
                                     <div class="form__input-icon">
                                         <svg fill="gray" xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +81,8 @@
                                 </div>
                             </div>
                             <div class="form__field">
-                                <label for="password" class="form__label">{{#ifCond language 'RU'}}Пароль{{else}}Password{{/ifCond}}</label>
+                                <label for="password" class="form__label">{{#ifCond language 'RU'}}
+                                    Пароль{{else}}Password{{/ifCond}}</label>
                                 <div class="form__input-wrapper">
                                     <div class="form__input-icon">
                                         <svg fill="gray" xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +109,8 @@
                             <span class="form__common-error"></span>
                             <div class="form__bottom">
                                 <div class="form__loader" style=""></div>
-                                <button class="form__button" type="submit">{{#ifCond language 'RU'}}Войти{{else}}Authenticate{{/ifCond}}</button>
+                                <button class="form__button" type="submit">{{#ifCond language 'RU'}}
+                                    Войти{{else}}Authenticate{{/ifCond}}</button>
                             </div>
                         </form>
                     </div>
