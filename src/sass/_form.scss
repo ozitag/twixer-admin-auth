@@ -97,7 +97,7 @@
       display: block;
     }
 
-    &:hover {
+    &:hover:not(:focus) {
       color: $color-white;
       background-color: $color-brand;
     }

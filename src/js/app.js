@@ -4,6 +4,7 @@
 const EMAIL_REGEXP = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const requiredMessage = "The field is required";
+const requiredMessageRu = "Вы не заполнили поле";
 
 const validators = {
   required(value) {
@@ -13,6 +14,24 @@ const validators = {
     return !EMAIL_REGEXP.test(value);
   },
 };
+
+function getRequiredMessage(lang) {
+  if (lang === "RU") {
+    return requiredMessageRu;
+  }
+
+  return requiredMessage;
+}
+
+function getPageLanguage() {
+  const language = document.body.dataset.language;
+
+  if (language === "RU") {
+    return "RU";
+  }
+
+  return "EN";
+}
 
 function updateViewportHeight() {
   document.documentElement.style.setProperty(
@@ -25,7 +44,15 @@ function updateViewportHeight() {
   }
 }
 
-function getCommonErrorLabel(code) {
+function getCommonErrorLabel(code, lang) {
+  if (lang === "RU") {
+    return getCommonErrorLabelRu(code);
+  } else {
+    return getCommonErrorLabelEn(code);
+  }
+}
+
+function getCommonErrorLabelEn(code) {
   if (code === 404) {
     return "Server not found";
   } else if (code >= 400 && code < 500) {
@@ -34,6 +61,18 @@ function getCommonErrorLabel(code) {
     return "Server Internal Error";
   } else {
     return "Unknown Error";
+  }
+}
+
+function getCommonErrorLabelRu(code) {
+  if (code === 404) {
+    return "Сервер не найден";
+  } else if (code >= 400 && code < 500) {
+    return "Неверный ответ сервера";
+  } else if (code >= 500) {
+    return "Внутренняя ошибка сервера";
+  } else {
+    return "Неизвестная ошибка";
   }
 }
 
@@ -90,13 +129,23 @@ class LoginForm {
 
         if (response.status === 400) {
           this.commonError.textContent = "";
-          this.form.elements.password.nextElementSibling.textContent =
-            "Invalid credentials";
+          let error;
+          if (getPageLanguage() === "RU") {
+            error = "Неверные данные";
+          } else {
+            error = "Invalid credentials";
+          }
+          this.form.elements.password.nextElementSibling.textContent = error;
           throw new Error("Invalid credentials");
         }
 
-        this.commonError.textContent = getCommonErrorLabel(response.status);
-        throw new Error(getCommonErrorLabel(response.status));
+        this.commonError.textContent = getCommonErrorLabel(
+          response.status,
+          getPageLanguage()
+        );
+        throw new Error(
+          getCommonErrorLabel(response.status, getPageLanguage())
+        );
       })
       .then((result) => {
         if (isValidBody(result)) {
@@ -104,7 +153,12 @@ class LoginForm {
           localStorage.setItem("refreshToken", result.refresh_token);
           window.location.href = "/admin";
         } else {
-          const error = "Invalid authentication response";
+          let error;
+          if (getPageLanguage() === "RU") {
+            error = "Неверный ответ аутентификации";
+          } else {
+            error = "Invalid authentication response";
+          }
           this.commonError.textContent = error;
           throw new Error(error);
         }
@@ -113,7 +167,13 @@ class LoginForm {
         this.removeSubmitting();
         if (error instanceof Error) {
           if (error.toString().includes("Failed to fetch")) {
-            this.commonError.textContent = "Service is not available";
+            let errorText;
+            if (getPageLanguage() === "RU") {
+              errorText = "Сервис недоступен";
+            } else {
+              errorText = "Service is not available";
+            }
+            this.commonError.textContent = errorText;
           }
         }
       });
@@ -124,11 +184,11 @@ class LoginForm {
     const errors = {};
 
     if (validators.required(values.login)) {
-      errors.login = requiredMessage;
+      errors.login = getRequiredMessage(getPageLanguage());
     }
 
     if (validators.required(values.password)) {
-      errors.password = requiredMessage;
+      errors.password = getRequiredMessage(getPageLanguage());
     }
 
     return errors;

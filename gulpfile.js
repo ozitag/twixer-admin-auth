@@ -29,11 +29,33 @@ gulp.task("html", function () {
     base_path: process.env.BASE_PATH || "",
     is_logo_png: process.env.IS_LOGO_PNG || false,
     brand_color: process.env.BRAND_COLOR || "#DD6900",
+    language: process.env.LANGUAGE || "EN",
+  };
+
+  const options = {
+    ignorePartials: true,
+    batch: [`src`],
+    helpers: {
+      times: function (n, block) {
+        let accum = "";
+        for (let i = 0; i < n; ++i) accum += block.fn(i + 1);
+        return accum;
+      },
+      ifCond: function (v1, v2, options) {
+        if (v1 === v2) {
+          return options.fn(this);
+        }
+        return options.inverse(this);
+      },
+      concat: function (...args) {
+        return `${args.slice(0, -1).join("")}`;
+      },
+    },
   };
 
   return gulp
     .src("src/index.hbs")
-    .pipe(handlebars(templateData))
+    .pipe(handlebars(templateData, options))
     .pipe(rename("index.html"))
     .pipe(htmlmin({ collapseWhitespace: true }))
     .pipe(gulp.dest("build"));
