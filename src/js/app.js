@@ -16,7 +16,7 @@ const validators = {
 };
 
 function getRequiredMessage(lang) {
-  if (lang === "RU") {
+  if (lang === "ru") {
     return requiredMessageRu;
   }
 
@@ -24,13 +24,13 @@ function getRequiredMessage(lang) {
 }
 
 function getPageLanguage() {
-  const language = document.body.dataset.language;
+  const language = document.documentElement.lang;
 
-  if (language === "RU") {
-    return "RU";
+  if (language === "ru") {
+    return "ru";
   }
 
-  return "EN";
+  return "en";
 }
 
 function updateViewportHeight() {
@@ -45,7 +45,7 @@ function updateViewportHeight() {
 }
 
 function getCommonErrorLabel(code, lang) {
-  if (lang === "RU") {
+  if (lang === "ru") {
     return getCommonErrorLabelRu(code);
   } else {
     return getCommonErrorLabelEn(code);
@@ -130,8 +130,8 @@ class LoginForm {
         if (response.status === 400) {
           this.commonError.textContent = "";
           let error;
-          if (getPageLanguage() === "RU") {
-            error = "Неверные данные";
+          if (getPageLanguage() === "ru") {
+            error = "Неверный пароль";
           } else {
             error = "Invalid credentials";
           }

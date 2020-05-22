@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{language}}">
 <head>
     <meta charset="utf-8">
     <title>{{ title }}</title>
@@ -28,7 +28,7 @@
         }
     </script>
 </head>
-<body class="page" data-language="{{language}}">
+<body class="page">
 <div class="page__inner">
     <main class="page__main">
         <section class="section">
@@ -47,7 +47,7 @@
                         </div>
                         <form class="form js-login-form">
                             <div class="form__field">
-                                <label for="login" class="form__label">{{#ifCond language 'RU'}}Логин{{else}}Login{{/ifCond}}</label>
+                                <label for="login" class="form__label">{{#ifCond language 'ru'}}Логин{{else}}Login{{/ifCond}}</label>
                                 <div class="form__input-wrapper">
                                     <div class="form__input-icon">
                                         <svg fill="gray" xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class="form__field">
-                                <label for="password" class="form__label">{{#ifCond language 'RU'}}Пароль{{else}}Password{{/ifCond}}</label>
+                                <label for="password" class="form__label">{{#ifCond language 'ru'}}Пароль{{else}}Password{{/ifCond}}</label>
                                 <div class="form__input-wrapper">
                                     <div class="form__input-icon">
                                         <svg fill="gray" xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +106,7 @@
                             <span class="form__common-error"></span>
                             <div class="form__bottom">
                                 <div class="form__loader" style=""></div>
-                                <button class="form__button" type="submit">{{#ifCond language 'RU'}}Аутентификация{{else}}Authenticate{{/ifCond}}</button>
+                                <button class="form__button" type="submit">{{#ifCond language 'ru'}}Войти{{else}}Authenticate{{/ifCond}}</button>
                             </div>
                         </form>
                     </div>
@@ -119,7 +119,7 @@
             <div class="footer__inner">
                 <div class="footer__left">TAGER</div>
                 <div class="footer__right">
-                    {{#ifCond language "EN"}}Powered by{{else ifCond language "RU"}}Разработано{{/ifCond}}
+                    Powered by
                     <div class="footer__right-logo">
                         <a href="https://ozitag.com" target="_blank">
                             <div class="footer__right-logo--desktop">
