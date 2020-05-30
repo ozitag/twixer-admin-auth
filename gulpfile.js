@@ -27,7 +27,7 @@ gulp.task("html", function () {
   const templateData = {
     title: process.env.PAGE_TITLE || "OZiTAG",
     base_path: process.env.BASE_PATH || "",
-    is_logo_png: process.env.IS_LOGO_PNG || false,
+    is_logo_png: process.env.IS_LOGO_PNG && (process.env.IS_LOGO_PNG.toString() === '1' || process.env.IS_LOGO_PNG.toString().toUpperCase() === 'TRUE'),
     brand_color: process.env.BRAND_COLOR || "#DD6900",
     language: process.env.LANGUAGE || "EN",
   };
