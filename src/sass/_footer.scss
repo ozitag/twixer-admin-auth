@@ -24,6 +24,13 @@
 
   &__left {
     font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.4em;
+
+    @include mobile{
+      letter-spacing: 0.2em;
+      font-size: 14px;
+    }
   }
 
   &__right {
