@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "gulp-replace": "^1.0.0",
     "localtunnel": "^2.0.0"
   }
 }

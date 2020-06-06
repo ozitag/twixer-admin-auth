@@ -1,6 +1,7 @@
 "use strict";
 require("dotenv").config();
 
+const fs = require("fs");
 const gulp = require("gulp");
 const sass = require("gulp-sass");
 const htmlmin = require("gulp-htmlmin");
@@ -10,7 +11,7 @@ const babel = require("gulp-babel");
 const cleanCSS = require("gulp-clean-css");
 const uglify = require("gulp-uglify");
 const handlebars = require("gulp-compile-handlebars");
-const fs = require("fs");
+const replace = require('gulp-replace');
 
 sass.compiler = require("node-sass");
 
@@ -24,7 +25,6 @@ gulp.task("sass", () => {
 });
 
 gulp.task("html", function () {
-
     const envLogo = process.env.LOGO;
     const basePath = process.env.BASE_PATH || "";
 
@@ -103,9 +103,18 @@ gulp.task("watch", () => {
     watch("src/js/**/*.js", gulp.series("scripts"));
 });
 
-gulp.task("favicon", () => {
+gulp.task("favicon-move", () => {
     return gulp.src("./assets/favicon/*").pipe(gulp.dest("./build/favicon"));
 });
+
+gulp.task('favicon-fix-paths', () => {
+    const basePath = process.env.BASE_PATH || "";
+
+    return gulp.src(['./assets/favicon/browserconfig.xml', './assets/favicon/site.webmanifest'])
+        .pipe(replace('/favicon', basePath + '/favicon'))
+        .pipe(gulp.dest('build/favicon'));
+});
+
 
 gulp.task("logo", () => {
     const files = [];
@@ -121,6 +130,7 @@ gulp.task("logo", () => {
     return gulp.src(files).pipe(gulp.dest("./build"));
 });
 
+gulp.task('favicon', gulp.series('favicon-move', 'favicon-fix-paths'));
 gulp.task("build", gulp.parallel("favicon", "logo", "html", "sass", "scripts"));
 gulp.task("dev", gulp.parallel("build", "watch"));
 gulp.task("default", gulp.parallel("build"));
