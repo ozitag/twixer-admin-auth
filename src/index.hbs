@@ -35,13 +35,11 @@
         <section class="section">
             <div class="container">
                 <div class="section__inner">
-                    <div class="logo">
-                        {{#if is_logo_png}}
-                            <img src="{{base_path}}/logo.png"/>
-                        {{else}}
-                            <img src="{{base_path}}/logo.svg"/>
-                        {{/if}}
-                    </div>
+                    {{#if logo}}
+                        <div class="logo">
+                            <img src="{{logo}}" alt=""/>
+                        </div>
+                    {{/if}}
                     <div class="form-wrapper">
                         <div class="loader">
                             <div class="loader__circle"></div>
