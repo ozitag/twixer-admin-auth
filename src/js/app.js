@@ -77,7 +77,7 @@ function getCommonErrorLabelRu(code) {
 }
 
 function isValidBody(body) {
-  if (body.access_token && body.access_token) {
+  if (body.access_token && body.refresh_token) {
     return body;
   }
 
