@@ -1,4 +1,4 @@
-# twixer-admin-auth
+# tager-admin-auth
 
 For development
 `yarn dev`

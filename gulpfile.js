@@ -26,12 +26,16 @@ gulp.task("sass", () => {
 
 gulp.task("html", function () {
     const envLogo = process.env.LOGO;
-    const basePath = process.env.BASE_PATH || "";
+
+    let basePath = process.env.BASE_PATH || "";
+    if (basePath.length > 0 && basePath[basePath.length - 1] === '/') {
+        basePath = basePath.slice(0, basePath.length - 1);
+    }
 
     let logo = null;
     if ('LOGO' in process.env) {
         if (typeof process.env.LOGO === "string" && process.env.LOGO.length > 0 && process.env.LOGO.toLowerCase() !== 'false' && process.env.LOGO.toLowerCase() !== 'null' && process.env.LOGO !== '0') {
-            logo = envLogo.startsWith('http:') ? envLogo : basePath + envLogo;
+            logo = envLogo.startsWith('http:') ? envLogo : basePath + '/' + envLogo;
         }
     } else {
         logo = "logo.svg";
