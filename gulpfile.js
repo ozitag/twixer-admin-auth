@@ -129,9 +129,8 @@ gulp.task("logo", () => {
                 }
             }
         }
-    } else{
+    } else {
         files.push("./assets/logo.svg");
-
     }
 
     return gulp.src(files).pipe(gulp.dest("./build"));
