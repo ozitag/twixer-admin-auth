@@ -35,10 +35,8 @@ gulp.task("html", function () {
     let logo = null;
     if ('LOGO' in process.env) {
         if (typeof process.env.LOGO === "string" && process.env.LOGO.length > 0 && process.env.LOGO.toLowerCase() !== 'false' && process.env.LOGO.toLowerCase() !== 'null' && process.env.LOGO !== '0') {
-            logo = envLogo.startsWith('http:') ? envLogo : basePath + '/' + envLogo;
+            logo = envLogo.startsWith('http:') || envLogo.startsWith('https:') ? envLogo : basePath + '/' + envLogo;
         }
-    } else {
-        logo = "logo.svg";
     }
 
     const templateData = {
@@ -123,12 +121,14 @@ gulp.task('favicon-fix-paths', () => {
 gulp.task("logo", () => {
     const files = [];
 
-    if (fs.existsSync("./assets/logo.png")) {
-        files.push("./assets/logo.png");
-    }
-
-    if (fs.existsSync("./assets/logo.svg")) {
-        files.push("./assets/logo.svg");
+    if ('LOGO' in process.env) {
+        if (typeof process.env.LOGO === "string" && process.env.LOGO.length > 0 && process.env.LOGO.toLowerCase() !== 'false' && process.env.LOGO.toLowerCase() !== 'null' && process.env.LOGO !== '0') {
+            if (process.env.LOGO.startsWith('http:') === false && process.env.LOGO.startsWith('https:') === false) {
+                if (fs.existsSync("./assets/" + process.env.LOGO)) {
+                    files.push("./assets/" + process.env.LOGO);
+                }
+            }
+        }
     }
 
     return gulp.src(files).pipe(gulp.dest("./build"));
