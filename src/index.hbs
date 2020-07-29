@@ -16,8 +16,10 @@
 
     <script>
         if (localStorage.accessToken) {
-            window.location.href = '/admin'
+            window.location.href = '{{base_url}}'
         }
+
+        const API_BASE_URL = '{{api_base_url}}';
     </script>
 
     <link href="//fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">

@@ -42,6 +42,8 @@ gulp.task("html", function () {
     const templateData = {
         title: process.env.PAGE_TITLE || "OZiTAG",
         base_path: basePath,
+        base_url: basePath.length > 0 ? basePath.slice(0, basePath.lastIndexOf('/')) : '/admin',
+        api_base_url: process.env.API_BASE_URL || '/api',
         logo: logo ? logo : null,
         brand_color: process.env.BRAND_COLOR || "#DD6900",
         language: process.env.LANGUAGE || "EN",

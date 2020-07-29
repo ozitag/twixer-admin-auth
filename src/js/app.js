@@ -112,7 +112,7 @@ class LoginForm {
     };
 
     this.addSubmitting();
-    fetch("/api/oauth/token", {
+    fetch(API_BASE_URL + "/oauth/token", {
       method: "POST",
       body: JSON.stringify(data),
       mode: "cors",
