@@ -151,7 +151,7 @@ class LoginForm {
         if (isValidBody(result)) {
           localStorage.setItem("accessToken", result.access_token);
           localStorage.setItem("refreshToken", result.refresh_token);
-          window.location.href = "/admin";
+          window.location.href = WEB_BASE_URL;
         } else {
           let error;
           if (getPageLanguage() === "RU") {
