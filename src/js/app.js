@@ -77,7 +77,7 @@ function getCommonErrorLabelRu(code) {
 }
 
 function isValidBody(body) {
-  if (body.access_token && body.refresh_token) {
+  if (body.accessToken && body.refreshToken) {
     return body;
   }
 
@@ -146,9 +146,9 @@ class LoginForm {
         );
       })
       .then((result) => {
-        if (isValidBody(result)) {
-          localStorage.setItem("accessToken", result.accessToken);
-          localStorage.setItem("refreshToken", result.refreshToken);
+        if (isValidBody(result.data)) {
+          localStorage.setItem("accessToken", result.data.accessToken);
+          localStorage.setItem("refreshToken", result.data.refreshToken);
           window.location.href = WEB_BASE_URL;
         } else {
           let error;
