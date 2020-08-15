@@ -104,15 +104,13 @@ class LoginForm {
   submit() {
     const values = this.getFormValues();
     const data = {
-      grant_type: "password",
-      client_id: "1",
+      clientId: 1,
       password: values.password,
-      username: values.login,
-      provider: "administrators",
+      email: values.login
     };
 
     this.addSubmitting();
-    fetch(API_BASE_URL + "/oauth/token", {
+    fetch(API_BASE_URL + "/auth/admin", {
       method: "POST",
       body: JSON.stringify(data),
       mode: "cors",
@@ -149,8 +147,8 @@ class LoginForm {
       })
       .then((result) => {
         if (isValidBody(result)) {
-          localStorage.setItem("accessToken", result.access_token);
-          localStorage.setItem("refreshToken", result.refresh_token);
+          localStorage.setItem("accessToken", result.accessToken);
+          localStorage.setItem("refreshToken", result.refreshToken);
           window.location.href = WEB_BASE_URL;
         } else {
           let error;
