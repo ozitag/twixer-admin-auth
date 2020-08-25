@@ -125,7 +125,7 @@ class LoginForm {
           return response.json();
         }
 
-        if (response.status === 400) {
+        if (response.status === 400 || response.status === 422) {
           this.commonError.textContent = "";
           let error;
           if (getPageLanguage() === "ru") {
