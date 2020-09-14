@@ -18,7 +18,9 @@
         const API_BASE_URL = '{{api_base_url}}';
         const WEB_BASE_URL = '{{base_url}}';
 
-        if (localStorage.accessToken) {
+        const accessToken = localStorage.getItem('admin_access_token')
+
+        if (accessToken) {
             window.location.href = WEB_BASE_URL;
         }
 

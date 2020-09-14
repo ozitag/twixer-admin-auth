@@ -147,8 +147,8 @@ class LoginForm {
       })
       .then((result) => {
         if (isValidBody(result.data)) {
-          localStorage.setItem("accessToken", result.data.accessToken);
-          localStorage.setItem("refreshToken", result.data.refreshToken);
+          localStorage.setItem("admin_access_token", result.data.accessToken);
+          localStorage.setItem("admin_refresh_token", result.data.refreshToken);
           window.location.href = WEB_BASE_URL;
         } else {
           let error;
