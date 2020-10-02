@@ -149,7 +149,9 @@ class LoginForm {
                 if (isValidBody(result.data)) {
                     localStorage.setItem("admin_access_token", result.data.accessToken);
                     localStorage.setItem("admin_refresh_token", result.data.refreshToken);
-                    window.location.href = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
                 } else {
                     let error;
                     if (getPageLanguage() === "RU") {

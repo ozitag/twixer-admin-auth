@@ -21,7 +21,7 @@
         const accessToken = localStorage.getItem('admin_access_token')
 
         if (accessToken) {
-            window.location.href = WEB_BASE_URL;
+            window.location.href = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
         }
 
     </script>
