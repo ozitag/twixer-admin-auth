@@ -150,7 +150,10 @@ class LoginForm {
                     localStorage.setItem("admin_access_token", result.data.accessToken);
                     localStorage.setItem("admin_refresh_token", result.data.refreshToken);
                     setTimeout(() => {
-                        window.location.reload();
+                        let redirectUrl = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
+                        redirectUrl = redirectUrl.endsWith('/') ? redirectUrl : redirectUrl + '/';
+                        console.log('Redirect to "' + redirectUrl + '"');
+                        window.location.href = redirectUrl;
                     }, 100);
                 } else {
                     let error;
