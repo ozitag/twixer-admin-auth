@@ -152,7 +152,6 @@ class LoginForm {
                     setTimeout(() => {
                         let redirectUrl = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
                         redirectUrl = redirectUrl.endsWith('/') ? redirectUrl : redirectUrl + '/';
-                        console.log('Redirect to "' + redirectUrl + '"');
                         window.location.href = redirectUrl;
                     }, 100);
                 } else {
