@@ -2,7 +2,7 @@ FROM nginx:alpine
 
 WORKDIR /srv
 
-RUN apk add --update make git python g++ nodejs npm
+RUN apk add --update make git python3 g++ nodejs npm
 
 COPY ./package.json /srv/package.json
 RUN npm install
