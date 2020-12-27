@@ -259,12 +259,11 @@
 {{/if}}
 
 {{#ifCond recaptchaVersion '3'}}
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{recaptchaSiteKey}}"></script>
 {{/ifCond}}
 
 {{#ifCond recaptchaVersion '2'}}
-    <script src="https://www.google.com/recaptcha/api.js?onload=onCaptchaLoadCallback&render=explicit&hl={{language}}"
-    async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onCaptchaLoadCallback&render=explicit&hl={{language}}" async defer></script>
 {{/ifCond}}
 
 </body>
