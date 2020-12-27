@@ -142,7 +142,7 @@ class LoginForm {
             };
 
             if (typeof RECAPTCHA_SITE_KEY !== 'undefined' && RECAPTCHA_SITE_KEY) {
-                data.googleRecaptchaToken = token;
+                data.recaptchaToken = token;
             }
 
             fetch(API_BASE_URL + "/auth/admin", {
