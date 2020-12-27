@@ -54,7 +54,7 @@ gulp.task("html", function () {
         recaptchaVersion: process.env.RECAPTCHA_VERSION ? process.env.RECAPTCHA_VERSION.toString().substr(0, 1) : null,
         recaptchaInvisible: process.env.RECAPTCHA_VERSION === '2-invisible',
 
-/*
+        /*
         apiBaseUrl: 'http://localhost:5512/api',
         recaptchaEnabled: true,
         recaptchaSiteKey: '6Leg7RUaAAAAAE59yJvLC9hmCCqC_bOnUGrpIKON',
@@ -73,7 +73,7 @@ gulp.task("html", function () {
         /*
             apiBaseUrl: 'http://localhost:5512/api',
             recaptchaEnabled: true,
-            recaptchaSiteKey: '6LexSxQaAAAAANSF7f1Go70qaUPz_OA-Dnh82Fox',
+            recaptchaSiteKey: '6LexSxQaAAAAANSF7f1Go70qaUPz_OA-Dnh82Fox2',
             recaptchaVersion: '3'
 */
     };

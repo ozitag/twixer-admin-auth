@@ -119,7 +119,6 @@ class LoginForm {
                 if (parseInt(RECAPTCHA_VERSION) === 2) {
                     if (RECAPTCHA_INVISIBLE) {
                         RECAPTCHA_TOKEN = null;
-
                         grecaptcha.execute().then(() => {
                             const timer = setInterval(() => {
                                 if (RECAPTCHA_TOKEN) {
@@ -136,20 +135,41 @@ class LoginForm {
                     }
                 } else {
                     grecaptcha.ready(() => {
-                        grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'login'}).then(token => {
-                            resolve(token);
-                        }).catch(e => {
+                        try {
+                            grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'login'}).then(token => {
+                                resolve(token);
+                            }).catch(e => {
+                                this.removeSubmitting();
+
+                                let error;
+                                if (getPageLanguage() === "RU") {
+                                    error = "Ошибка установки reCAPTCHA v3";
+                                } else {
+                                    error = "Failure install reCAPTCHA v3";
+                                }
+
+                                this.commonError.textContent = error;
+                            });
+                        } catch (e) {
                             this.removeSubmitting();
 
                             let error;
-                            if (getPageLanguage() === "RU") {
-                                error = "Ошибка установки reCAPTCHA";
+                            if (e.toString().includes('Invalid site key or not loaded')) {
+                                if (getPageLanguage() === "RU") {
+                                    error = "Неверный ключ reCAPTCHA v3";
+                                } else {
+                                    error = "Invalid site key reCAPTCHA v3";
+                                }
                             } else {
-                                error = "Failure install reCAPTCHA";
+                                if (getPageLanguage() === "RU") {
+                                    error = "Ошибка установки reCAPTCHA v3";
+                                } else {
+                                    error = "Failure install reCAPTCHA v3";
+                                }
                             }
 
                             this.commonError.textContent = error;
-                        });
+                        }
                     });
                 }
             }
@@ -298,6 +318,7 @@ class LoginForm {
 
     init() {
         this.form.addEventListener("submit", (e) => {
+
             e.preventDefault();
 
             const errors = this.validate();
