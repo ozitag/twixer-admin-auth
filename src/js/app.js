@@ -52,6 +52,8 @@ function getCommonErrorLabel(code, lang) {
 function getCommonErrorLabelEn(code) {
     if (code === 404) {
         return "Server not found";
+    } else if (code === 429) {
+        return "Too Many Attempts";
     } else if (code >= 400 && code < 500) {
         return "Invalid Server Response";
     } else if (code >= 500) {
@@ -64,6 +66,8 @@ function getCommonErrorLabelEn(code) {
 function getCommonErrorLabelRu(code) {
     if (code === 404) {
         return "Сервер не найден";
+    } else if (code === 429) {
+        return "Слишком много попыток";
     } else if (code >= 400 && code < 500) {
         return "Неверный ответ сервера";
     } else if (code >= 500) {
@@ -79,6 +83,15 @@ function isValidBody(body) {
     }
 
     return false;
+}
+
+function resetCaptcha() {
+    if (typeof RECAPTCHA_SITE_KEY !== 'undefined' && RECAPTCHA_SITE_KEY) {
+        if (parseInt(RECAPTCHA_VERSION) === 2) {
+            grecaptcha.reset();
+            RECAPTCHA_TOKEN = null;
+        }
+    }
 }
 
 class LoginForm {
@@ -159,25 +172,40 @@ class LoginForm {
                         return response.json();
                     }
 
-                    if (response.status === 400 || response.status === 422) {
-                        this.commonError.textContent = "";
-                        let error;
-                        if (getPageLanguage() === "ru") {
-                            error = "Неверный пароль";
-                        } else {
-                            error = "Invalid credentials";
-                        }
-                        this.form.elements.password.nextElementSibling.textContent = error;
-                        throw new Error("Invalid credentials");
-                    }
+                    response.json().then(result => {
 
-                    this.commonError.textContent = getCommonErrorLabel(
-                        response.status,
-                        getPageLanguage()
-                    );
-                    throw new Error(
-                        getCommonErrorLabel(response.status, getPageLanguage())
-                    );
+                        if (response.status === 422 && result.errors && result.errors.recaptchaToken) {
+
+                            let error;
+                            if (getPageLanguage() === "RU") {
+                                error = "Вы робот?";
+                            } else {
+                                error = "Are you robot?";
+                            }
+
+                            this.commonError.textContent = error;
+
+                        } else if (response.status === 400 || response.status === 422) {
+                            this.commonError.textContent = "";
+
+                            let error;
+                            if (getPageLanguage() === "ru") {
+                                error = "Неверный пароль";
+                            } else {
+                                error = "Invalid credentials";
+                            }
+                            this.form.elements.password.nextElementSibling.textContent = error;
+
+                            resetCaptcha();
+                        } else {
+                            this.commonError.textContent = getCommonErrorLabel(
+                                response.status,
+                                getPageLanguage()
+                            );
+
+                            resetCaptcha();
+                        }
+                    });
                 })
                 .then((result) => {
                     if (isValidBody(result.data)) {
@@ -196,7 +224,7 @@ class LoginForm {
                             error = "Invalid authentication response";
                         }
                         this.commonError.textContent = error;
-                        throw new Error(error);
+                        resetCaptcha();
                     }
                 })
                 .catch((error) => {
