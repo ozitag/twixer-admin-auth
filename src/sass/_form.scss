@@ -24,6 +24,17 @@
     &--captcha {
       display: flex;
       justify-content: center;
+      min-height: 78px;
+
+      > div {
+        overflow: hidden;
+        max-width: 100%;
+
+        > div {
+          overflow: hidden;
+          max-width: 100%;
+        }
+      }
     }
 
     &--captcha-invisible {
