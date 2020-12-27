@@ -9,6 +9,10 @@
   &__inner {
     padding: 30px 0;
 
+    @media (min-width: 1200px) and (max-height: 670px) {
+      padding: 15px 0;
+    }
+
     @include tablet {
       padding: 20px 0;
     }
@@ -27,7 +31,7 @@
     font-size: 20px;
     letter-spacing: 0.4em;
 
-    @include mobile{
+    @include mobile {
       letter-spacing: 0.2em;
       font-size: 14px;
     }
@@ -41,7 +45,7 @@
       margin-left: 8px;
       padding-top: 2px;
 
-      @include mobile{
+      @include mobile {
         margin-left: 5px;
       }
 
@@ -53,7 +57,7 @@
       svg {
         height: 36px;
 
-        @include mobile{
+        @include mobile {
           transform: translateY(-1px);
         }
       }
