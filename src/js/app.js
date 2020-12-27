@@ -100,7 +100,85 @@ class LoginForm {
         this.loader = document.querySelector(".loader");
         this.commonError = this.form.querySelector(".form__common-error");
 
+        this.submitGoogleToken = this.submitGoogleToken.bind(this);
+        this.addSubmitting = this.addSubmitting.bind(this);
+        this.removeSubmitting = this.removeSubmitting.bind(this);
+
         this.init();
+    }
+
+    submitGoogleToken(idToken) {
+        this.addSubmitting();
+
+        fetch(API_BASE_URL + "/auth/admin/google", {
+            method: "POST",
+            body: JSON.stringify({idToken}),
+            mode: "cors",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    this.commonError.textContent = "";
+                    return response.json();
+                }
+
+                if (response.status === 404) {
+
+                    let error;
+                    if (getPageLanguage() === "ru") {
+                        error = "Сервер не поддерживает Google авторизацию";
+                    } else {
+                        error = "Server doesn't support Google Authentication";
+                    }
+
+                    this.commonError.textContent = error;
+
+                } else {
+
+                    this.commonError.textContent = getCommonErrorLabel(
+                        response.status,
+                        getPageLanguage()
+                    );
+                }
+
+            })
+            .then((result) => {
+                if (isValidBody(result.data)) {
+                    localStorage.setItem("admin_access_token", result.data.accessToken);
+                    localStorage.setItem("admin_refresh_token", result.data.refreshToken);
+                    setTimeout(() => {
+                        let redirectUrl = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
+                        redirectUrl = redirectUrl.endsWith('/') ? redirectUrl : redirectUrl + '/';
+                        window.location.href = redirectUrl;
+                    }, 100);
+                } else {
+                    let error;
+                    if (getPageLanguage() === "ru") {
+                        error = "Неверный ответ аутентификации";
+                    } else {
+                        error = "Invalid authentication response";
+                    }
+                    this.commonError.textContent = error;
+                    resetCaptcha();
+                }
+            })
+            .catch((error) => {
+                this.removeSubmitting();
+                if (error instanceof Error) {
+                    if (error.toString().includes("Failed to fetch")) {
+                        let errorText;
+                        if (getPageLanguage() === "ru") {
+                            errorText = "Сервис недоступен";
+                        } else {
+                            errorText = "Service is not available";
+                        }
+                        this.commonError.textContent = errorText;
+                    }
+                }
+            });
     }
 
     addSubmitting() {
@@ -334,13 +412,21 @@ class LoginForm {
 
 class LoginFormUI {
     static init() {
-        document.querySelectorAll(".js-login-form").forEach((elem) => {
-            new LoginForm(elem);
-        });
+        LoginForm.form = new LoginForm(document.querySelector(".js-login-form"));
     }
 
     static initOnLoad() {
         document.addEventListener("DOMContentLoaded", this.init);
+    }
+
+    static submitGoogleToken(token) {
+        LoginForm.form.submitGoogleToken(token);
+    }
+    static startLoader() {
+        LoginForm.form.addSubmitting();
+    }
+    static stopLoader() {
+        LoginForm.form.removeSubmitting();
     }
 }
 

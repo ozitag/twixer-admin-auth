@@ -14,6 +14,10 @@
     <meta name="theme-color" content="#ffffff"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    {{#if googleAuthEnabled}}
+        <meta name="google-signin-client_id" content="{{googleAuthClientId}}.apps.googleusercontent.com">
+    {{/if}}
+
     <script>
         const API_BASE_URL = '{{apiBaseUrl}}';
         const WEB_BASE_URL = '{{baseUrl}}';
@@ -32,6 +36,11 @@
             --brand-color: {{brandColor}}
         }
     </style>
+
+    {{#if googleAuthEnabled}}
+        <script src="https://apis.google.com/js/api:client.js"></script>
+    {{/if}}
+
     <link rel="stylesheet" href="{{basePath}}/app.css"/>
     <script src="{{basePath}}/app.js"></script>
 </head>
@@ -125,7 +134,7 @@
 
                                 {{#if googleAuthEnabled}}
                                     <div class="google-button">
-                                        <button class="google-button__button">
+                                        <span class="google-button__button" id="googleAuthButton">
                                             <i class="google-button__icon">
                                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px"
                                                      height="18px" viewBox="0 0 48 48" class="abcRioButtonSvg">
@@ -143,9 +152,10 @@
                                                 </svg>
                                             </i>
                                             <span class="google-button__text">
-                                                {{#ifCond language 'RU'}}Войти через Google{{else}}Sign in with Google{{/ifCond}}
+                                                {{#ifCond language 'RU'}}
+                                                    Войти через Google{{else}}Sign in with Google{{/ifCond}}
                                             </span>
-                                        </button>
+                                        </span>
                                     </div>
                                 {{/if}}
                             </div>
@@ -292,6 +302,28 @@
 {{#ifCond recaptchaVersion '2'}}
     <script src = "https://www.google.com/recaptcha/api.js?onload=onCaptchaLoadCallback&render=explicit&hl={{language}}" async defer ></script>
 {{/ifCond}}
+
+{{#if googleAuthEnabled}}
+    <script>
+        gapi.load('auth2', function () {
+            auth2 = gapi.auth2.init({
+                client_id: '{{googleAuthClientId}}.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin',
+            });
+
+            document.getElementById('googleAuthButton').addEventListener('click', () => LoginFormUI.startLoader());
+            auth2.attachClickHandler(document.getElementById('googleAuthButton'), {}, function (googleUser) {
+                const idToken = googleUser.getAuthResponse().id_token;
+                LoginFormUI.submitGoogleToken(idToken);
+            }, function (error) {
+                LoginFormUI.stopLoader();
+                if(error.error !== 'popup_closed_by_user'){
+                    console.log('Google Auth Error: ', JSON.stringify(error, undefined, 2));
+                }
+            });
+        });
+    </script>
+{{/if}}
 
 </body>
 </html>

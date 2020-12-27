@@ -91,6 +91,11 @@ gulp.task("html", function () {
 
         googleAuthEnabled: !!process.env.GOOGLE_CLIENT_ID,
         googleAuthClientId: process.env.GOOGLE_CLIENT_ID,
+
+        /*
+            googleAuthEnabled: true,
+            googleAuthClientId: '160741798000-o3mctcbaq2tku2vh64btj5ks96993na3'
+        */
     };
 
     const options = {
