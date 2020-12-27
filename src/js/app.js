@@ -142,7 +142,7 @@ class LoginForm {
                                 this.removeSubmitting();
 
                                 let error;
-                                if (getPageLanguage() === "RU") {
+                                if (getPageLanguage() === "ru") {
                                     error = "Ошибка установки reCAPTCHA v3";
                                 } else {
                                     error = "Failure install reCAPTCHA v3";
@@ -155,13 +155,13 @@ class LoginForm {
 
                             let error;
                             if (e.toString().includes('Invalid site key or not loaded')) {
-                                if (getPageLanguage() === "RU") {
+                                if (getPageLanguage() === "ru") {
                                     error = "Неверный ключ reCAPTCHA v3";
                                 } else {
                                     error = "Invalid site key reCAPTCHA v3";
                                 }
                             } else {
-                                if (getPageLanguage() === "RU") {
+                                if (getPageLanguage() === "ru") {
                                     error = "Ошибка установки reCAPTCHA v3";
                                 } else {
                                     error = "Failure install reCAPTCHA v3";
@@ -212,7 +212,7 @@ class LoginForm {
                         if (response.status === 422 && result.errors && result.errors.recaptchaToken) {
 
                             let error;
-                            if (getPageLanguage() === "RU") {
+                            if (getPageLanguage() === "ru") {
                                 error = "Вы робот?";
                             } else {
                                 error = "Are you robot?";
@@ -253,7 +253,7 @@ class LoginForm {
                         }, 100);
                     } else {
                         let error;
-                        if (getPageLanguage() === "RU") {
+                        if (getPageLanguage() === "ru") {
                             error = "Неверный ответ аутентификации";
                         } else {
                             error = "Invalid authentication response";
@@ -267,7 +267,7 @@ class LoginForm {
                     if (error instanceof Error) {
                         if (error.toString().includes("Failed to fetch")) {
                             let errorText;
-                            if (getPageLanguage() === "RU") {
+                            if (getPageLanguage() === "ru") {
                                 errorText = "Сервис недоступен";
                             } else {
                                 errorText = "Service is not available";
