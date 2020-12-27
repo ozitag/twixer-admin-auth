@@ -136,7 +136,6 @@ class LoginForm {
             const values = this.getFormValues();
 
             const data = {
-                clientId: 1,
                 email: values.login,
                 password: values.password,
             };
