@@ -1,6 +1,3 @@
-// import "regenerator-runtime/runtime";
-// import "core-js"; // or a more selective import such as "core-js/es/array"
-
 const EMAIL_REGEXP = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const requiredMessage = "The field is required";
@@ -101,84 +98,123 @@ class LoginForm {
         this.loader.classList.remove("show");
     }
 
-    submit() {
-        const values = this.getFormValues();
-        const data = {
-            clientId: 1,
-            password: values.password,
-            email: values.login
-        };
-
-        this.addSubmitting();
-        fetch(API_BASE_URL + "/auth/admin", {
-            method: "POST",
-            body: JSON.stringify(data),
-            mode: "cors",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    this.commonError.textContent = "";
-                    return response.json();
-                }
-
-                if (response.status === 400 || response.status === 422) {
-                    this.commonError.textContent = "";
-                    let error;
-                    if (getPageLanguage() === "ru") {
-                        error = "Неверный пароль";
+    captchaPromise() {
+        return new Promise(resolve => {
+            if (typeof RECAPTCHA_SITE_KEY === 'undefined' || !RECAPTCHA_SITE_KEY) {
+                resolve();
+            } else {
+                if (parseInt(RECAPTCHA_VERSION) === 2) {
+                    if (RECAPTCHA_INVISIBLE) {
+                        RECAPTCHA_TOKEN = null;
+                        grecaptcha.execute();
+                        var timer = setInterval(() => {
+                            if (RECAPTCHA_TOKEN) {
+                                resolve(RECAPTCHA_TOKEN);
+                                clearInterval(timer);
+                                grecaptcha.reset();
+                            }
+                        }, 100);
                     } else {
-                        error = "Invalid credentials";
+                        resolve(RECAPTCHA_TOKEN);
                     }
-                    this.form.elements.password.nextElementSibling.textContent = error;
-                    throw new Error("Invalid credentials");
-                }
-
-                this.commonError.textContent = getCommonErrorLabel(
-                    response.status,
-                    getPageLanguage()
-                );
-                throw new Error(
-                    getCommonErrorLabel(response.status, getPageLanguage())
-                );
-            })
-            .then((result) => {
-                if (isValidBody(result.data)) {
-                    localStorage.setItem("admin_access_token", result.data.accessToken);
-                    localStorage.setItem("admin_refresh_token", result.data.refreshToken);
-                    setTimeout(() => {
-                        let redirectUrl = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
-                        redirectUrl = redirectUrl.endsWith('/') ? redirectUrl : redirectUrl + '/';
-                        window.location.href = redirectUrl;
-                    }, 100);
                 } else {
-                    let error;
-                    if (getPageLanguage() === "RU") {
-                        error = "Неверный ответ аутентификации";
-                    } else {
-                        error = "Invalid authentication response";
-                    }
-                    this.commonError.textContent = error;
-                    throw new Error(error);
+                    grecaptcha.ready(() => {
+                        grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'}).then(token => {
+                            resolve(token);
+                        });
+                    });
                 }
+            }
+        })
+    }
+
+    submit() {
+        this.addSubmitting();
+
+        this.captchaPromise().then(token => {
+
+            const values = this.getFormValues();
+
+            const data = {
+                clientId: 1,
+                email: values.login,
+                password: values.password,
+            };
+
+            if (typeof RECAPTCHA_SITE_KEY !== 'undefined' && RECAPTCHA_SITE_KEY) {
+                data.googleRecaptchaToken = token;
+            }
+
+            fetch(API_BASE_URL + "/auth/admin", {
+                method: "POST",
+                body: JSON.stringify(data),
+                mode: "cors",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
             })
-            .catch((error) => {
-                this.removeSubmitting();
-                if (error instanceof Error) {
-                    if (error.toString().includes("Failed to fetch")) {
-                        let errorText;
-                        if (getPageLanguage() === "RU") {
-                            errorText = "Сервис недоступен";
-                        } else {
-                            errorText = "Service is not available";
-                        }
-                        this.commonError.textContent = errorText;
+                .then((response) => {
+                    if (response.ok) {
+                        this.commonError.textContent = "";
+                        return response.json();
                     }
-                }
-            });
+
+                    if (response.status === 400 || response.status === 422) {
+                        this.commonError.textContent = "";
+                        let error;
+                        if (getPageLanguage() === "ru") {
+                            error = "Неверный пароль";
+                        } else {
+                            error = "Invalid credentials";
+                        }
+                        this.form.elements.password.nextElementSibling.textContent = error;
+                        throw new Error("Invalid credentials");
+                    }
+
+                    this.commonError.textContent = getCommonErrorLabel(
+                        response.status,
+                        getPageLanguage()
+                    );
+                    throw new Error(
+                        getCommonErrorLabel(response.status, getPageLanguage())
+                    );
+                })
+                .then((result) => {
+                    if (isValidBody(result.data)) {
+                        localStorage.setItem("admin_access_token", result.data.accessToken);
+                        localStorage.setItem("admin_refresh_token", result.data.refreshToken);
+                        setTimeout(() => {
+                            let redirectUrl = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
+                            redirectUrl = redirectUrl.endsWith('/') ? redirectUrl : redirectUrl + '/';
+                            window.location.href = redirectUrl;
+                        }, 100);
+                    } else {
+                        let error;
+                        if (getPageLanguage() === "RU") {
+                            error = "Неверный ответ аутентификации";
+                        } else {
+                            error = "Invalid authentication response";
+                        }
+                        this.commonError.textContent = error;
+                        throw new Error(error);
+                    }
+                })
+                .catch((error) => {
+                    this.removeSubmitting();
+                    if (error instanceof Error) {
+                        if (error.toString().includes("Failed to fetch")) {
+                            let errorText;
+                            if (getPageLanguage() === "RU") {
+                                errorText = "Сервис недоступен";
+                            } else {
+                                errorText = "Service is not available";
+                            }
+                            this.commonError.textContent = errorText;
+                        }
+                    }
+                });
+        })
     }
 
     validate() {

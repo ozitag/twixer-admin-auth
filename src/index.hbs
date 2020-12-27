@@ -26,6 +26,36 @@
 
     </script>
 
+    {{#if recaptchaEnabled}}
+        {{#ifCond recaptchaVersion '3'}}
+            <script src="https://www.google.com/recaptcha/api.js?render={{recaptchaSiteKey}}"></script>
+        {{/ifCond}}
+
+        {{#ifCond recaptchaVersion '2'}}
+        <script type = "text/javascript" >
+        var RECAPTCHA_TOKEN = null;
+        var onCaptchaLoadCallback = function () {
+            grecaptcha.render('recaptcha_html_element', {
+                'sitekey': '{{recaptchaSiteKey}}',
+                {{#if recaptchaIsVersion2Invisible}}size: 'invisible',{{/if}}
+                callback: response => {
+                    RECAPTCHA_TOKEN = response;
+                }
+            });
+        };
+            </script>
+        {{/ifCond}}
+
+        <script>
+            const RECAPTCHA_SITE_KEY = '{{recaptchaSiteKey}}';
+            const RECAPTCHA_VERSION = '{{recaptchaVersion}}';
+                {{#ifCond recaptchaVersion '2'}}
+                const RECAPTCHA_INVISIBLE = {{#if recaptchaIsVersion2Invisible}}true{{else}}false{{/if}};
+                {{/ifCond}}
+        </script>
+    {{/if}}
+
+
     <link href="//fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <style>
         div {
@@ -110,6 +140,11 @@
                                     <span class="form__error"></span>
                                 </div>
                             </div>
+                            {{#ifCond recaptchaVersion '2'}}
+                                <div class="form__field {{#if recaptchaIsVersion2Invisible}}form__field--captcha-invisible{{else}}form__field--captcha{{/if}}">
+                                    <div id="recaptcha_html_element"></div>
+                                </div>
+                            {{/ifCond}}
                             <span class="form__common-error"></span>
                             <div class="form__bottom">
                                 <div class="form__loader" style=""></div>
@@ -189,5 +224,11 @@
         </div>
     </footer>
 </div>
+
+{{#ifCond recaptchaVersion '2'}}
+    <script src="https://www.google.com/recaptcha/api.js?onload=onCaptchaLoadCallback&render=explicit&hl={{language}}"
+    async defer></script>
+{{/ifCond}}
+
 </body>
 </html>

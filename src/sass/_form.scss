@@ -21,6 +21,20 @@
     position: relative;
     width: 100%;
 
+    &--captcha {
+      display: flex;
+      justify-content: center;
+    }
+
+    &--captcha-invisible {
+      margin-bottom: 0;
+      position: static;
+
+      .grecaptcha-badge {
+        right: -500px !important;
+      }
+    }
+
     &:not(:last-child) {
       margin-bottom: 25px;
     }
@@ -60,15 +74,15 @@
     height: 44px;
     border: 1px solid $color-border;
 
-    &--password{
+    &--password {
       font-size: 18px;
 
-      @include mobile{
+      @include mobile {
         font-size: 16px;
       }
     }
 
-    @include mobile{
+    @include mobile {
       font-size: 16px;
     }
 
@@ -99,7 +113,7 @@
     cursor: pointer;
     text-align: center;
 
-    @include mobile{
+    @include mobile {
       font-size: 14px;
       width: 100%;
       display: block;
@@ -131,4 +145,8 @@
     left: 0;
     bottom: -20px;
   }
+}
+
+.grecaptcha-badge{
+  display: none;
 }

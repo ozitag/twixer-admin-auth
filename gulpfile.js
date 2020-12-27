@@ -40,13 +40,45 @@ gulp.task("html", function () {
     }
 
     const templateData = {
-        title: process.env.PAGE_TITLE || "OZiTAG",
         base_path: basePath,
         base_url: basePath.length > 0 ? basePath.slice(0, basePath.lastIndexOf('/')) : '/admin',
         api_base_url: process.env.API_BASE_URL || '/api',
+
+        title: process.env.PAGE_TITLE || "OZiTAG",
         logo: logo ? logo : null,
         brand_color: process.env.BRAND_COLOR || "#DD6900",
         language: process.env.LANGUAGE || "EN",
+
+
+        recaptchaEnabled: !!process.env.RECAPTCHA_SITE_KEY,
+        recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || null,
+        recaptchaVersion: process.env.RECAPTCHA_VERSION ? process.env.RECAPTCHA_VERSION.toString() : null,
+        recaptchaIsVersion2Invisible: 'RECAPTCHA_INVISIBLE' in process.env
+            && (process.env.RECAPTCHA_INVISIBLE === '1' || process.env.RECAPTCHA_INVISIBLE.toUpperCase() === 'TRUE'),
+
+
+        /*
+            recaptchaEnabled: true,
+            recaptchaSiteKey: '6Leg7RUaAAAAAE59yJvLC9hmCCqC_bOnUGrpIKON',
+            recaptchaVersion: '2',
+            recaptchaIsVersion2Invisible: true
+        */
+
+
+        /*
+           recaptchaEnabled: true,
+           recaptchaSiteKey: '6LdyTxQaAAAAANvlA8Nc77upMH2j_aMRaJMvz9pr',
+           recaptchaVersion: '2',
+           recaptchaIsVersion2Invisible: false
+        */
+
+        /*
+            recaptchaEnabled: true,
+            recaptchaSiteKey: '6LexSxQaAAAAANSF7f1Go70qaUPz_OA-Dnh82Fox',
+            recaptchaVersion: '3'
+        */
+
+
     };
 
     const options = {
