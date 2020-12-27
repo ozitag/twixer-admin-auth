@@ -119,21 +119,36 @@ class LoginForm {
                 if (parseInt(RECAPTCHA_VERSION) === 2) {
                     if (RECAPTCHA_INVISIBLE) {
                         RECAPTCHA_TOKEN = null;
-                        grecaptcha.execute();
-                        var timer = setInterval(() => {
-                            if (RECAPTCHA_TOKEN) {
-                                resolve(RECAPTCHA_TOKEN);
-                                clearInterval(timer);
-                                grecaptcha.reset();
-                            }
-                        }, 100);
+
+                        grecaptcha.execute().then(() => {
+                            const timer = setInterval(() => {
+                                if (RECAPTCHA_TOKEN) {
+                                    resolve(RECAPTCHA_TOKEN);
+                                    clearInterval(timer);
+                                    grecaptcha.reset();
+                                }
+                            }, 50);
+                        }).catch(error => {
+                            console.log(error);
+                        });
                     } else {
                         resolve(RECAPTCHA_TOKEN);
                     }
                 } else {
                     grecaptcha.ready(() => {
-                        grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'}).then(token => {
+                        grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'login'}).then(token => {
                             resolve(token);
+                        }).catch(e => {
+                            this.removeSubmitting();
+
+                            let error;
+                            if (getPageLanguage() === "RU") {
+                                error = "Ошибка установки reCAPTCHA";
+                            } else {
+                                error = "Failure install reCAPTCHA";
+                            }
+
+                            this.commonError.textContent = error;
                         });
                     });
                 }

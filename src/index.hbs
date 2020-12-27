@@ -26,36 +26,6 @@
 
     </script>
 
-    {{#if recaptchaEnabled}}
-        {{#ifCond recaptchaVersion '3'}}
-            <script src="https://www.google.com/recaptcha/api.js?render={{recaptchaSiteKey}}"></script>
-        {{/ifCond}}
-
-        {{#ifCond recaptchaVersion '2'}}
-        <script type = "text/javascript" >
-            var RECAPTCHA_TOKEN = null;
-            var onCaptchaLoadCallback = function () {
-                grecaptcha.render('recaptcha_html_element', {
-                    'sitekey': '{{recaptchaSiteKey}}',
-                    {{#if recaptchaInvisible}}size: 'invisible',{{/if}}
-                    callback: response => {
-                        RECAPTCHA_TOKEN = response;
-                    }
-                });
-            };
-            </script>
-        {{/ifCond}}
-
-        <script>
-            const RECAPTCHA_SITE_KEY = '{{recaptchaSiteKey}}';
-            const RECAPTCHA_VERSION = '{{recaptchaVersion}}';
-                {{#ifCond recaptchaVersion '2'}}
-                const RECAPTCHA_INVISIBLE = {{#if recaptchaInvisible}}true{{else}}false{{/if}};
-                {{/ifCond}}
-        </script>
-    {{/if}}
-
-
     <link href="//fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <style>
         div {
@@ -141,14 +111,16 @@
                                 </div>
                             </div>
                             {{#ifCond recaptchaVersion '2'}}
-                                <div class="form__field {{#if recaptchaInvisible}}form__field--captcha-invisible{{else}}form__field--captcha{{/if}}">
+                                <div class="form__field form-field-captcha {{#if
+                                        recaptchaInvisible}}form__field--captcha-invisible{{else}}form__field--captcha{{/if}}">
                                     <div id="recaptcha_html_element"></div>
                                 </div>
                             {{/ifCond}}
                             <span class="form__common-error"></span>
                             <div class="form__bottom">
                                 <div class="form__loader" style=""></div>
-                                <button class="form__button" type="submit">{{#ifCond language 'RU'}}
+                                <button class="form__button" type="submit"
+                                        {{#ifCond recaptchaVersion '2'}}disabled{{/ifCond}}>{{#ifCond language 'RU'}}
                                     Войти{{else}}Authenticate{{/ifCond}}</button>
                             </div>
                         </form>
@@ -224,6 +196,71 @@
         </div>
     </footer>
 </div>
+
+{{#if recaptchaEnabled}}
+    {{#ifCond recaptchaVersion '2'}}
+        <script type = "text/javascript" >
+        var RECAPTCHA_TOKEN = null;
+
+        document.querySelector('.form__button').setAttribute('disabled', true);
+
+        var onCaptchaLoadCallback = function () {
+
+            let disabledTimeout;
+            const disabledTimer = setInterval(() => {
+                if (document.getElementById('recaptcha_html_element') && document.getElementById('recaptcha_html_element').querySelector('iframe')) {
+                    disabledTimeout = setTimeout(() => {
+                        document.querySelector('.form__button').removeAttribute('disabled');
+                    }, 350);
+                    clearInterval(disabledTimer);
+                }
+            }, 50);
+
+            grecaptcha.render('recaptcha_html_element', {
+                'sitekey': '{{recaptchaSiteKey}}',
+                {{#if recaptchaInvisible}}size: 'invisible',{{/if}}
+                callback: response => {
+                    RECAPTCHA_TOKEN = response;
+                },
+                'expired-callback': () => {
+                    grecaptcha.reset();
+                    RECAPTCHA_TOKEN = null;
+                },
+                'error-callback': () => {
+                    if (disabledTimer) {
+                        clearInterval(disabledTimer);
+                    }
+                    if (disabledTimeout) {
+                        clearTimeout(disabledTimeout);
+                    }
+
+                    {{#if recaptchaInvisible}}
+                        const $node = document.querySelector('.form-field-captcha');
+                        if ($node) {
+                            $node.classList.add('error');
+                            //$node.innerText = '{{#ifCond language 'RU'}}Ошибка инициализации reCAPTCHA{{else}}Failure initialize reCAPTCHA{{/ifCond}}';
+                        }
+                    {{/if}}
+
+                    document.querySelector('.form__button').setAttribute('disabled', true);
+                }
+            });
+        };
+        </script>
+    {{/ifCond}}
+
+    <script>
+        const RECAPTCHA_SITE_KEY = '{{recaptchaSiteKey}}';
+        const RECAPTCHA_VERSION = '{{recaptchaVersion}}';
+            {{#ifCond recaptchaVersion '2'}}
+            const RECAPTCHA_INVISIBLE = {{#if recaptchaInvisible}}true{{else}}false{{/if}};
+            {{/ifCond}}
+    </script>
+{{/if}}
+
+{{#ifCond recaptchaVersion '3'}}
+    <script src="https://www.google.com/recaptcha/api.js?render={{recaptchaSiteKey}}"></script>
+{{/ifCond}}
 
 {{#ifCond recaptchaVersion '2'}}
     <script src="https://www.google.com/recaptcha/api.js?onload=onCaptchaLoadCallback&render=explicit&hl={{language}}"

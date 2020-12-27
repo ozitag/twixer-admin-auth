@@ -17,6 +17,16 @@
   width: 100%;
   position: relative;
 
+  .form-field-captcha.error {
+    color: red;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__field {
     position: relative;
     width: 100%;
@@ -24,7 +34,13 @@
     &--captcha {
       display: flex;
       justify-content: center;
-      min-height: 78px;
+      height: 78px;
+      overflow: hidden;
+
+      iframe{
+        display:block;
+        height: 78px;
+      }
 
       > div {
         overflow: hidden;
@@ -43,6 +59,27 @@
 
       .grecaptcha-badge {
         right: -500px !important;
+      }
+
+      &.error{
+        display: flex;
+        justify-content: center;
+        height: 78px;
+
+        .grecaptcha-badge {
+          position: static !important;
+          display: block !important;
+          visibility: visible !important;
+          bottom: auto !important;
+          right: auto !important;
+          height: 74px !important;
+          width: 300px !important;
+        }
+
+        iframe{
+          width: 304px;
+          height: 78px;
+        }
       }
     }
 
@@ -134,9 +171,15 @@
       display: block;
     }
 
-    &:hover:not(:focus) {
+    &:hover:not(:focus):not([disabled]) {
       color: $color-white;
       background-color: $color-brand;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+      cursor: default;
+      color: #000;
     }
   }
 
