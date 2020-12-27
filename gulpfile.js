@@ -42,19 +42,17 @@ gulp.task("html", function () {
     const templateData = {
         basePath: basePath,
         baseUrl: basePath.length > 0 ? basePath.slice(0, basePath.lastIndexOf('/')) : '/admin',
-        //apiBaseUrl: process.env.API_BASE_URL || '/api',
+        apiBaseUrl: process.env.API_BASE_URL || '/api',
 
         title: process.env.PAGE_TITLE || "OZiTAG",
         logo: logo ? logo : null,
         brandColor: process.env.BRAND_COLOR || "#DD6900",
         language: process.env.LANGUAGE || "EN",
 
-        /*
         recaptchaEnabled: !!process.env.RECAPTCHA_SITE_KEY,
         recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || null,
         recaptchaVersion: process.env.RECAPTCHA_VERSION ? process.env.RECAPTCHA_VERSION.toString().substr(0, 1) : null,
         recaptchaInvisible: process.env.RECAPTCHA_VERSION === '2-invisible',
-*/
 
         /*
             recaptchaEnabled: true,
@@ -63,11 +61,13 @@ gulp.task("html", function () {
             recaptchaIsVersion2Invisible: true
         */
 
+        /*
         apiBaseUrl: 'http://localhost:5512/api',
         recaptchaEnabled: true,
         recaptchaSiteKey: '6LdyTxQaAAAAANvlA8Nc77upMH2j_aMRaJMvz9pr',
         recaptchaVersion: '2',
         recaptchaIsVersion2Invisible: false
+*/
 
         /*
             recaptchaEnabled: true,
