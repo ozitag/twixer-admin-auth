@@ -45,9 +45,21 @@ gulp.task("html", function () {
         apiBaseUrl: process.env.API_BASE_URL || '/api',
 
         title: process.env.PAGE_TITLE || "OZiTAG",
-        logo: logo ? logo : null,
         brandColor: process.env.BRAND_COLOR || "#DD6900",
+        logo: logo ? logo : null,
         language: process.env.LANGUAGE || "EN",
+
+        /*
+            brandColor: '#8a0e30',
+            logo: 'https://belmebel.by/admin/v2/auth/logo.svg',
+            language: 'RU',
+        */
+
+        /*
+            brandColor: '#252c32',
+            logo: 'https://banuba-catalog.dev.ozitag.com/admin/auth/logo.svg',
+            language: 'EN',
+        */
 
         recaptchaEnabled: !!process.env.RECAPTCHA_SITE_KEY,
         recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || null,
@@ -76,25 +88,20 @@ gulp.task("html", function () {
             recaptchaSiteKey: '6LexSxQaAAAAANSF7f1Go70qaUPz_OA-Dnh82Fox',
             recaptchaVersion: '3'
         */
+
+        googleAuthEnabled: !!process.env.GOOGLE_CLIENT_ID,
+        googleAuthClientId: process.env.GOOGLE_CLIENT_ID,
     };
 
     const options = {
         ignorePartials: true,
         batch: [`src`],
         helpers: {
-            times: function (n, block) {
-                let accum = "";
-                for (let i = 0; i < n; ++i) accum += block.fn(i + 1);
-                return accum;
-            },
             ifCond: function (v1, v2, options) {
                 if (v1 === v2) {
                     return options.fn(this);
                 }
                 return options.inverse(this);
-            },
-            concat: function (...args) {
-                return `${args.slice(0, -1).join("")}`;
             },
         },
     };

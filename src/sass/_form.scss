@@ -37,8 +37,8 @@
       height: 78px;
       overflow: hidden;
 
-      iframe{
-        display:block;
+      iframe {
+        display: block;
         height: 78px;
       }
 
@@ -61,7 +61,7 @@
         right: -500px !important;
       }
 
-      &.error{
+      &.error {
         display: flex;
         justify-content: center;
         height: 78px;
@@ -76,7 +76,7 @@
           width: 300px !important;
         }
 
-        iframe{
+        iframe {
           width: 304px;
           height: 78px;
         }
@@ -150,6 +150,19 @@
   &__bottom {
     display: flex;
     justify-content: center;
+
+    &--with-google {
+      .form__button {
+        padding-left: 10px;
+        padding-right: 10px;
+        flex: 1 1 1px;
+        justify-content: center;
+      }
+
+      .google-button {
+        margin-left: 10px;
+      }
+    }
   }
 
   &__button {

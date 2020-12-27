@@ -1,0 +1,44 @@
+.google-button {
+  flex: 1 1 1px;
+
+  &:hover {
+
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #4285f4;
+    height: 100%;
+    transition: background-color .218s,border-color .218s,box-shadow .218s;
+  }
+
+  &__icon {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    height: 100%;
+  }
+
+  &__text {
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #fff;
+    white-space: nowrap;
+    background: #4285f4;
+    height: 100%;
+    align-items: center;
+    display: flex;
+  }
+
+  &:hover {
+    .google-button__button {
+      box-shadow: 0 0 3px 3px rgba(66, 133, 244, .3);
+    }
+  }
+}
