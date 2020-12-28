@@ -136,8 +136,18 @@ class LoginForm {
 
                     this.commonError.textContent = error;
 
-                } else {
+                } else if (response.status === 422) {
+                    this.commonError.textContent = "";
 
+                    let error;
+                    if (getPageLanguage() === "ru") {
+                        error = "Пользователя не найдено";
+                    } else {
+                        error = "User not found";
+                    }
+
+                    this.commonError.textContent = error;
+                } else {
                     this.commonError.textContent = getCommonErrorLabel(
                         response.status,
                         getPageLanguage()
