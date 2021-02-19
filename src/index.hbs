@@ -2,17 +2,23 @@
 <html lang="{{#ifCond language 'RU'}}ru{{else}}en{{/ifCond}}">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{{ title }}</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="{{basePath}}/favicon/apple-touch-icon.png"/>
     <link rel="icon" type="image/png" sizes="32x32" href="{{basePath}}/favicon/favicon-32x32.png"/>
     <link rel="icon" type="image/png" sizes="16x16" href="{{basePath}}/favicon/favicon-16x16.png"/>
+    <link rel="mask-icon" href="{{basePath}}/favicon/safari-pinned-tab.svg" color="{{brandColor}}"/>
+
     <link rel="manifest" href="{{basePath}}/favicon/site.webmanifest"/>
-    <link rel="mask-icon" href="{{basePath}}/favicon/safari-pinned-tab.svg" color="#dd6900"/>
     <meta name="msapplication-config" content="{{basePath}}/favicon/browserconfig.xml"/>
-    <meta name="msapplication-TileColor" content="#da532c"/>
-    <meta name="theme-color" content="#ffffff"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="{{brandColor}}"/>
+    <meta content="{{brandColor}}"/>
+    <meta content={`ya-title={{brandColor}},ya-dock=fade`}/>
+    <meta name="msapplication-navbutton-color" content="{{brandColor}}"/>
+    <meta name="msapplication-TileColor" content="{{brandColor}}"/>
 
     {{#if googleAuthEnabled}}
         <meta name="google-signin-client_id" content="{{googleAuthClientId}}.apps.googleusercontent.com">
@@ -27,7 +33,6 @@
         if (accessToken) {
             window.location.href = WEB_BASE_URL.startsWith('https://') || WEB_BASE_URL.startsWith('http://') ? WEB_BASE_URL : window.location.origin + WEB_BASE_URL;
         }
-
     </script>
 
     <link href="//fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -300,7 +305,8 @@
 {{/ifCond}}
 
 {{#ifCond recaptchaVersion '2'}}
-    <script src = "https://www.google.com/recaptcha/api.js?onload=onCaptchaLoadCallback&render=explicit&hl={{language}}" async defer ></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onCaptchaLoadCallback&render=explicit&hl={{language}}"
+    async defer ></script>
 {{/ifCond}}
 
 {{#if googleAuthEnabled}}
@@ -317,7 +323,7 @@
                 LoginFormUI.submitGoogleToken(idToken);
             }, function (error) {
                 LoginFormUI.stopLoader();
-                if(error.error !== 'popup_closed_by_user'){
+                if (error.error !== 'popup_closed_by_user') {
                     console.log('Google Auth Error: ', JSON.stringify(error, undefined, 2));
                 }
             });
