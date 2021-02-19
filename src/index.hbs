@@ -14,11 +14,9 @@
     <link rel="manifest" href="{{basePath}}/favicon/site.webmanifest"/>
     <meta name="msapplication-config" content="{{basePath}}/favicon/browserconfig.xml"/>
 
-    <meta name="theme-color" content="{{brandColor}}"/>
-    <meta content="{{brandColor}}"/>
-    <meta content={`ya-title={{brandColor}},ya-dock=fade`}/>
-    <meta name="msapplication-navbutton-color" content="{{brandColor}}"/>
-    <meta name="msapplication-TileColor" content="{{brandColor}}"/>
+    <meta name="theme-color" content="{{brandColor}}">
+    <meta name="msapplication-navbutton-color" content="{{brandColor}}">
+    <meta name="apple-mobile-web-app-status-bar-style" content="{{brandColor}}">
 
     {{#if googleAuthEnabled}}
         <meta name="google-signin-client_id" content="{{googleAuthClientId}}.apps.googleusercontent.com">
