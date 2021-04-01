@@ -32,6 +32,10 @@
     @include mobile {
       padding-bottom: 58px;
     }
+
+    .page--hide-footer & {
+      padding-bottom: 0;
+    }
   }
 
   &__footer {
@@ -68,7 +72,7 @@
       max-height: 100px;
     }
 
-    @include mobile{
+    @include mobile {
       max-height: 100px;
     }
   }
@@ -84,12 +88,16 @@
     height: calc(100vh - 68px);
   }
 
-  @include tablet{
+  @include tablet {
     height: calc(100vh - 78px);
   }
 
   @include mobile {
     height: calc((var(--vh, 1vh) * 100) - 58px);
+  }
+
+  .page--hide-footer & {
+    height: calc(100vh);
   }
 
   &__inner {

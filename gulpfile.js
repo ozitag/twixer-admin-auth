@@ -43,60 +43,17 @@ gulp.task("html", function () {
         basePath: basePath,
         baseUrl: basePath.length > 0 ? basePath.slice(0, basePath.lastIndexOf('/')) : '/admin',
         apiBaseUrl: process.env.API_BASE_URL || '/api',
-
+        hideFooter: !!process.env.HIDE_FOOTER,
         title: process.env.PAGE_TITLE || "OZiTAG",
         brandColor: process.env.BRAND_COLOR || "#DD6900",
         logo: logo ? logo : null,
         language: process.env.LANGUAGE || "EN",
-
-        /*
-            brandColor: '#8a0e30',
-            logo: 'https://belmebel.by/admin/v2/auth/logo.svg',
-            language: 'RU',
-        */
-
-        /*
-            brandColor: '#252c32',
-            logo: 'https://banuba-catalog.dev.ozitag.com/admin/auth/logo.svg',
-            language: 'EN',
-        */
-
         recaptchaEnabled: !!process.env.RECAPTCHA_SITE_KEY,
         recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || null,
         recaptchaVersion: process.env.RECAPTCHA_VERSION ? process.env.RECAPTCHA_VERSION.toString().substr(0, 1) : null,
         recaptchaInvisible: process.env.RECAPTCHA_VERSION === '2-invisible',
-
-        /*
-            apiBaseUrl: 'http://localhost:5512/api',
-            recaptchaEnabled: true,
-            recaptchaSiteKey: '6Leg7RUaAAAAAE59yJvLC9hmCCqC_bOnUGrpIKON',
-            recaptchaVersion: '2',
-            recaptchaInvisible: true
-        */
-
-        /*
-            apiBaseUrl: 'http://localhost:5512/api',
-            recaptchaEnabled: true,
-            recaptchaSiteKey: '6LdyTxQaAAAAANvlA8Nc77upMH2j_aMRaJMvz9pr',
-            recaptchaVersion: '2',
-            recaptchaInvisible: false
-        */
-
-        /*
-            apiBaseUrl: 'http://localhost:5512/api',
-            recaptchaEnabled: true,
-            recaptchaSiteKey: '6LexSxQaAAAAANSF7f1Go70qaUPz_OA-Dnh82Fox',
-            recaptchaVersion: '3'
-        */
-
-
         googleAuthEnabled: !!process.env.GOOGLE_CLIENT_ID,
         googleAuthClientId: process.env.GOOGLE_CLIENT_ID,
-
-/*
-            googleAuthEnabled: true,
-            googleAuthClientId: '160741798000-o3mctcbaq2tku2vh64btj5ks96993na3'
-*/
     };
 
     const options = {
