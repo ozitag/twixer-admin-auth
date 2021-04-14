@@ -107,6 +107,15 @@ class LoginForm {
         this.init();
     }
 
+    displayError(error) {
+        this.commonError.innerText = error;
+    }
+
+    resetError() {
+        this.commonError.innerText = '';
+        document.querySelectorAll('.form__error').forEach(item => item.innerText = '');
+    }
+
     submitGoogleToken(idToken) {
         this.addSubmitting();
 
@@ -131,7 +140,7 @@ class LoginForm {
                     if (getPageLanguage() === "ru") {
                         error = "Сервер не поддерживает Google авторизацию";
                     } else {
-                        error = "Server doesn't support Google Authentication";
+                        error = "Google authentication is not supported";
                     }
 
                     this.commonError.textContent = error;
@@ -265,6 +274,7 @@ class LoginForm {
     }
 
     submit() {
+        this.resetError();
         this.addSubmitting();
 
         this.captchaPromise().then(token => {
@@ -432,11 +442,21 @@ class LoginFormUI {
     static submitGoogleToken(token) {
         LoginForm.form.submitGoogleToken(token);
     }
+
     static startLoader() {
         LoginForm.form.addSubmitting();
     }
+
     static stopLoader() {
         LoginForm.form.removeSubmitting();
+    }
+
+    static displayError(error) {
+        LoginForm.form.displayError(error);
+    }
+
+    static resetError() {
+        LoginForm.form.resetError();
     }
 }
 

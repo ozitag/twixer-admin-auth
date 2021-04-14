@@ -147,9 +147,15 @@
     }
   }
 
+
   &__bottom {
     display: flex;
     justify-content: center;
+
+    @media (min-width: 601px) {
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
 
     &--with-google {
       @include mobile {
@@ -224,10 +230,22 @@
     font-size: 12px;
     color: red;
     left: 0;
-    bottom: -20px;
+    bottom: -22px;
   }
 }
 
 .grecaptcha-badge {
   display: none;
+}
+
+
+@media (min-width: 600px) {
+  body.en .form__bottom--with-google .form__button--submit {
+    width: 154px;
+    max-width: 154px;
+  }
+  body.ru .form__bottom--with-google .form__button--submit {
+    width: 144px;
+    max-width: 144px;
+  }
 }

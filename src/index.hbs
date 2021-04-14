@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="{{basePath}}/app.css"/>
     <script src="{{basePath}}/app.js"></script>
 </head>
-<body class="page {{#if hideFooter}}page--hide-footer{{/if}}">
+<body class="page {{#if hideFooter}}page--hide-footer{{/if}} {{#ifCond language 'RU'}}ru{{else}}en{{/ifCond}}">
 <div class="page__inner">
     <main class="page__main">
         <section class="section">
@@ -131,13 +131,13 @@
                             <span class="form__common-error"></span>
                             <div class="form__bottom{{#if googleAuthEnabled}} form__bottom--with-google{{/if}}">
                                 <div class="form__loader" style=""></div>
-                                <button class="form__button" type="submit"
+                                <button class="form__button form__button--submit" type="submit"
                                         {{#ifCond recaptchaVersion '2'}}disabled{{/ifCond}}>{{#ifCond language 'RU'}}
                                     Войти{{else}}Authenticate{{/ifCond}}</button>
 
                                 {{#if googleAuthEnabled}}
-                                    <div class="google-button">
-                                        <span class="google-button__button" id="googleAuthButton">
+                                    <button class="google-button" disabled id="googleAuthButton">
+                                        <span class="google-button__button">
                                             <i class="google-button__icon">
                                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px"
                                                      height="18px" viewBox="0 0 48 48" class="abcRioButtonSvg">
@@ -159,7 +159,7 @@
                                                     Войти через Google{{else}}Sign in with Google{{/ifCond}}
                                             </span>
                                         </span>
-                                    </div>
+                                    </button>
                                 {{/if}}
                             </div>
                         </form>
@@ -311,22 +311,35 @@
 
 {{#if googleAuthEnabled}}
     <script>
+        const errors = {
+            COOKIE_DISABLED: '{{#ifCond language
+                                        'RU'}}Cookie запрещены в вашем браузере{{else}}Cookies are not enabled in current environment.{{/ifCond}}',
+        };
+
         gapi.load('auth2', function () {
-            auth2 = gapi.auth2.init({
-                client_id: '{{googleAuthClientId}}.apps.googleusercontent.com',
-                cookiepolicy: 'single_host_origin',
+            document.getElementById('googleAuthButton').removeAttribute('disabled');
+            document.getElementById('googleAuthButton').addEventListener('click', () => {
+                LoginFormUI.startLoader();
+                LoginFormUI.resetError();
+
+                gapi.auth2.authorize({
+                    client_id: '{{googleAuthClientId}}',
+                    scope: 'email profile openid',
+                    response_type: 'id_token'
+                }, function (response) {
+                    if (response.error) {
+                        if (response.error === 'idpiframe_initialization_failed') {
+                            LoginFormUI.displayError(errors.COOKIE_DISABLED);
+                        } else {
+                            LoginFormUI.displayError(response.details);
+                        }
+                        LoginFormUI.stopLoader();
+                    } else {
+                        LoginFormUI.submitGoogleToken(response.id_token);
+                    }
+                });
             });
 
-            document.getElementById('googleAuthButton').addEventListener('click', () => LoginFormUI.startLoader());
-            auth2.attachClickHandler(document.getElementById('googleAuthButton'), {}, function (googleUser) {
-                const idToken = googleUser.getAuthResponse().id_token;
-                LoginFormUI.submitGoogleToken(idToken);
-            }, function (error) {
-                LoginFormUI.stopLoader();
-                if (error.error !== 'popup_closed_by_user') {
-                    console.log('Google Auth Error: ', JSON.stringify(error, undefined, 2));
-                }
-            });
         });
     </script>
 {{/if}}
