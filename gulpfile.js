@@ -43,7 +43,7 @@ gulp.task("html", function () {
     const templateData = {
         basePath: basePath,
         baseUrl: basePath.length > 0 ? basePath.slice(0, basePath.lastIndexOf('/')) : '/admin',
-        //  apiBaseUrl: process.env.API_BASE_URL || '/api',
+        apiBaseUrl: process.env.API_BASE_URL || '/api',
         hideFooter: !!process.env.HIDE_FOOTER,
         title: process.env.PAGE_TITLE || "OZiTAG",
         brandColor: process.env.BRAND_COLOR || "#DD6900",
@@ -53,12 +53,12 @@ gulp.task("html", function () {
         recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || null,
         recaptchaVersion: process.env.RECAPTCHA_VERSION ? process.env.RECAPTCHA_VERSION.toString().substr(0, 1) : null,
         recaptchaInvisible: process.env.RECAPTCHA_VERSION === '2-invisible',
-        //googleAuthEnabled: !!process.env.GOOGLE_CLIENT_ID,
-        //googleAuthClientId: process.env.GOOGLE_CLIENT_ID,
+        googleAuthEnabled: !!process.env.GOOGLE_CLIENT_ID,
+        googleAuthClientId: process.env.GOOGLE_CLIENT_ID,
 
-        apiBaseUrl: 'http://localhost:3090/api',
+       /* apiBaseUrl: 'http://localhost:3090/api',
         googleAuthEnabled: true,
-        googleAuthClientId: '160741798000-tm06gp0o3vhcos9qm98pe1os0p1kul74'
+        googleAuthClientId: '160741798000-tm06gp0o3vhcos9qm98pe1os0p1kul74'*/
     };
 
     if (templateData.googleAuthClientId.indexOf('.apps.googleusercontent.com') === -1) {
