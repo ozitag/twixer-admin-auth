@@ -61,7 +61,7 @@ gulp.task("html", function () {
         googleAuthClientId: '160741798000-tm06gp0o3vhcos9qm98pe1os0p1kul74'*/
     };
 
-    if (templateData.googleAuthClientId.indexOf('.apps.googleusercontent.com') === -1) {
+    if (templateData.googleAuthClientId && templateData.googleAuthClientId.indexOf('.apps.googleusercontent.com') === -1) {
         templateData.googleAuthClientId += '.apps.googleusercontent.com';
     }
 
