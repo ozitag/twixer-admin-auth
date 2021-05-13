@@ -318,7 +318,9 @@
 
         gapi.load('auth2', function () {
             document.getElementById('googleAuthButton').removeAttribute('disabled');
-            document.getElementById('googleAuthButton').addEventListener('click', () => {
+            document.getElementById('googleAuthButton').addEventListener('click', e => {
+                e.preventDefault();
+
                 LoginFormUI.startLoader();
                 LoginFormUI.resetError();
 
