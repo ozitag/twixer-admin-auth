@@ -172,7 +172,7 @@
       .google-button {
         margin-left: 10px;
 
-        @include mobile{
+        @include mobile {
           margin: 10px 0 0 0;
           width: 100%;
           height: 48px;
@@ -239,7 +239,7 @@
 }
 
 
-@media (min-width: 600px) {
+@media (min-width: 768px) {
   body.en .form__bottom--with-google .form__button--submit {
     width: 154px;
     max-width: 154px;
