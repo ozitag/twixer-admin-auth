@@ -8,7 +8,7 @@ COPY ./package.json /srv/package.json
 RUN npm install
 
 COPY ./gulpfile.js /srv/gulpfile.js
-COPY ./assets /srv/assets
+COPY public/assets /srv/assets
 COPY ./src /srv/src
 
 COPY ./scripts/docker-entrypoint.sh /entrypoint.sh
