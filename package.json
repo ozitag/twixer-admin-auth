@@ -1,11 +1,8 @@
 {
   "name": "tager-admin-auth",
   "version": "1.0.0",
-  "description": "",
+  "description": "Admin authentication application",
   "scripts": {
-    "dev": "./scripts/develop.sh",
-    "release": "./scripts/release.sh",
-    "build": "./node_modules/.bin/gulp build"
   },
   "repository": {
     "type": "git",
@@ -14,29 +11,11 @@
   "author": "OZiTAG",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ozitag/twixer-admin-auth/issues"
+    "url": "https://github.com/ozitag/tager-admin-auth/issues"
   },
-  "homepage": "https://github.com/ozitag/twixer-admin-auth#readme",
+  "homepage": "https://github.com/ozitag/tager-admin-auth#readme",
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "dotenv": "^8.2.0",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-compile-handlebars": "^0.6.1",
-    "gulp-htmlmin": "^5.0.1",
-    "gulp-load-plugins": "^2.0.3",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.1.0",
-    "gulp-uglify": "^3.0.2",
-    "gulp-watch": "^5.0.1",
-    "node-sass": "^4.14.1",
-    "prettier": "2.0.5"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "gulp-replace": "^1.0.0",
-    "localtunnel": "^2.0.0"
   }
 }
