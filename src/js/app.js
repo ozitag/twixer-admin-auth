@@ -130,23 +130,26 @@ class LoginForm {
         })
             .then((response) => {
                 if (response.ok) {
-                    this.commonError.textContent = "";
+                    //this.commonError.textContent = "";
                     return response.json();
                 }
 
                 if (response.status === 404) {
-
                     let error;
                     if (getPageLanguage() === "ru") {
-                        error = "Сервер не поддерживает Google авторизацию";
+                        error = "Google авторизация не поддерживается";
                     } else {
                         error = "Google authentication is not supported";
                     }
 
                     this.commonError.textContent = error;
-
+                } else if (response.status === 400) {
+                    // this.commonError.textContent = "";
+                    response.json().then(data => {
+                        this.commonError.textContent = data.message;
+                    });
                 } else if (response.status === 422) {
-                    this.commonError.textContent = "";
+                    // this.commonError.textContent = "";
 
                     let error;
                     if (getPageLanguage() === "ru") {
@@ -274,7 +277,7 @@ class LoginForm {
     }
 
     submit() {
-        this.resetError();
+        //this.resetError();
         this.addSubmitting();
 
         this.captchaPromise().then(token => {
@@ -300,6 +303,7 @@ class LoginForm {
                 },
             })
                 .then((response) => {
+
                     if (response.ok) {
                         this.commonError.textContent = "";
                         return response.json();
@@ -319,7 +323,7 @@ class LoginForm {
                             this.commonError.textContent = error;
 
                         } else if (response.status === 400 || response.status === 422) {
-                            this.commonError.textContent = "";
+                            // this.commonError.textContent = "";
 
                             let error;
                             if (getPageLanguage() === "ru") {
@@ -327,7 +331,8 @@ class LoginForm {
                             } else {
                                 error = "Invalid credentials";
                             }
-                            this.form.elements.password.nextElementSibling.textContent = error;
+
+                            this.commonError.textContent = error;
 
                             resetCaptcha();
                         } else {
@@ -406,12 +411,14 @@ class LoginForm {
         return values;
     }
 
-    syncErrors(errors) {
+    syncErrors(errors, noReset) {
         this.getInputCollection().forEach((input) => {
             input.nextElementSibling.textContent = errors[input.name] || "";
         });
 
-        this.commonError.textContent = "";
+        if(!noReset) {
+            this.commonError.textContent = "";
+        }
     }
 
     init() {
@@ -421,7 +428,7 @@ class LoginForm {
 
             const errors = this.validate();
 
-            this.syncErrors(errors);
+            this.syncErrors(errors, Object.keys(errors).length === 0);
 
             if (Object.keys(errors).length === 0) {
                 this.submit();

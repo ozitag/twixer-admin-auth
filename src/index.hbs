@@ -330,7 +330,9 @@
                     response_type: 'id_token'
                 }, function (response) {
                     if (response.error) {
-                        if (response.error === 'idpiframe_initialization_failed') {
+                        if (response.error === 'popup_closed_by_user') {
+                            LoginFormUI.resetError();
+                        } else if (response.error === 'idpiframe_initialization_failed') {
                             LoginFormUI.displayError(errors.COOKIE_DISABLED);
                         } else {
                             LoginFormUI.displayError(response.details);
