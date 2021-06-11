@@ -12,11 +12,97 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png"/>
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
     <title>React App</title>
+
+    <style>
+        :root {
+            --primary-color: "%REACT_APP_PRIMARY_COLOR%";
+            --vh: 1vh;
+        }
+
+        .loading {
+            width: 100%;
+            height: calc(var(--vh, 1vh) * 100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lds-ring {
+            display: inline-flex;
+            position: relative;
+            width: 80px;
+            height: 80px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid var(--primary-color);
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: var(--primary-color) transparent transparent transparent;
+        }
+
+        @media (max-width: 767px) {
+            .lds-ring {
+                width: 60px;
+                height: 60px;
+            }
+
+            .lds-ring div {
+                width: 48px;
+                height: 48px;
+                border-width: 6px;
+            }
+        }
+
+        .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+
+        .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+
+        .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <script>
+        (function () {
+            const update = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+            window.addEventListener('resize', () => update());
+            update();
+        })();
+    </script>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="root">
-    <span>Loading...</span>
+    <div class="loading">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
