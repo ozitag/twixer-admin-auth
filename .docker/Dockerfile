@@ -5,12 +5,12 @@ WORKDIR /srv
 RUN apk add --update make git python3 g++ nodejs npm
 
 COPY ./package.json /srv/package.json
-RUN npm install
-
-COPY ./gulpfile.js /srv/gulpfile.js
-COPY ./assets /srv/assets
 COPY ./src /srv/src
+COPY ./vite.config.ts /srv/vite.config.ts
+COPY ./index.html /srv/index.html
 
-COPY ./scripts/docker-entrypoint.sh /entrypoint.sh
+RUN npm i
+
+COPY ./.docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT [ "sh", "/entrypoint.sh" ]

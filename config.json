@@ -1,0 +1,20 @@
+{
+  "theme": "dark",
+  "language": "ru",
+  "basePath": "/",
+  "apiUrl": "http://localhost:7001/api",
+  "logo": "logo.svg",
+  "pageTitle": "[DEV] Ведаем - Панель Управления",
+  "authGoogle": {
+    "enabled": true,
+    "clientId": "160741798000-ea810gam1vull18b3a1dori585hpe0br.apps.googleusercontent.com"
+  },
+  "authCredentials": {
+    "enabled": true
+  },
+  "copyright": {
+    "visible": true,
+    "displayPoweredBy": true,
+    "appName": "TAGER"
+  }
+}
