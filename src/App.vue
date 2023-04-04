@@ -16,7 +16,7 @@
 import {defineComponent, onMounted} from 'vue';
 import Form from './Form/Form.vue'
 import Footer from './Footer/Footer.vue'
-import {type Config, useConfig} from './config';
+import {useConfig} from './config';
 
 export default defineComponent({
   name: 'App',
@@ -24,7 +24,7 @@ export default defineComponent({
     Form, Footer,
   },
   setup() {
-    const {copyright, logo, pageTitle} = useConfig();
+    const {copyright, logo, pageTitle, basePath} = useConfig();
 
     onMounted(() => {
       document.title = pageTitle;
@@ -32,7 +32,7 @@ export default defineComponent({
 
     return {
       copyrightVisible: copyright.visible,
-      logo
+      logo: logo ? basePath + (basePath.endsWith('/') ? '' : '/') + logo : null,
     };
   }
 });

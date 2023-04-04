@@ -34,8 +34,11 @@ export default {
 
       setTimeout(() => {
         let redirectUrl = basePath.startsWith('https://') || basePath.startsWith('http://') ? basePath : window.location.origin + basePath;
-        redirectUrl = redirectUrl.endsWith('/') ? redirectUrl : redirectUrl + '/';
-        window.location.href = redirectUrl;
+        if (redirectUrl.endsWith('/')) {
+          redirectUrl = redirectUrl.slice(0, redirectUrl.length - 1);
+        }
+
+        window.location.href = redirectUrl.length > 0 ? redirectUrl.slice(0, redirectUrl.lastIndexOf('/')) : '/admin';
       }, 100);
     }
 
