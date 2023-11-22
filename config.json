@@ -9,6 +9,10 @@
     "enabled": true,
     "clientId": "160741798000-ea810gam1vull18b3a1dori585hpe0br.apps.googleusercontent.com"
   },
+  "authYandex": {
+    "enabled": true,
+    "clientId": "bf26eec73059452b84382df8996eaaf7"
+  },
   "authCredentials": {
     "enabled": true
   },

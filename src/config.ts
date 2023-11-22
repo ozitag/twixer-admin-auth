@@ -13,7 +13,12 @@ export type Config = {
     logo: string | null;
     pageTitle: string;
 
-    authGoogle: {
+    authGoogle?: {
+        enabled: boolean;
+        clientId?: string;
+    };
+
+    authYandex?: {
         enabled: boolean;
         clientId?: string;
     };
@@ -44,7 +49,12 @@ export function useConfig(): Config {
             clientId: config.authGoogle.clientId || undefined,
         },
 
-        authCredentials:{
+        authYandex: {
+            enabled: config.authYandex?.enabled || false,
+            clientId: config.authYandex?.clientId || undefined,
+        },
+
+        authCredentials: {
             enabled: config.authCredentials?.enabled || false
         },
 

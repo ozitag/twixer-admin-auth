@@ -5,7 +5,7 @@
         <div class="logo" v-if="logo">
           <img :src="logo" alt="TAGER">
         </div>
-        <Form/>
+        <Form :yandex-access-token="yandexAccessToken"/>
       </div>
     </main>
     <Footer v-if="copyrightVisible"/>
@@ -13,10 +13,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted} from 'vue';
+import {defineComponent, onMounted, ref} from 'vue';
 import Form from './Form/Form.vue'
 import Footer from './Footer/Footer.vue'
 import {useConfig} from './config';
+
+const getYandexAccessToken = (): string|undefined => {
+  if(!window.location.hash.startsWith('#access_token='))return undefined;
+  return window.location.hash.substring('#access_token='.length, window.location.hash.indexOf('&'));
+}
 
 export default defineComponent({
   name: 'App',
@@ -24,13 +29,16 @@ export default defineComponent({
     Form, Footer,
   },
   setup() {
-    const {copyright, logo, pageTitle, basePath} = useConfig();
+    const {copyright, logo, pageTitle, basePath,apiUrl} = useConfig();
+    const loading = ref<boolean>(false);
 
     onMounted(() => {
       document.title = pageTitle;
     });
 
     return {
+      yandexAccessToken: getYandexAccessToken(),
+      loading,
       copyrightVisible: copyright.visible,
       logo: logo ? basePath + (basePath.endsWith('/') ? '' : '/') + logo : null,
     };

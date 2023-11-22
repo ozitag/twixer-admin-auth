@@ -1,7 +1,12 @@
 <template>
   <div class="inner">
     <div :class="{form: true, dark: isDark}">
-      <GoogleButton @start="resetError" @error="onError" @success="onSuccess"/>
+      <div class="loader" v-if="loading">
+
+       <div></div><div></div><div></div><div></div>
+      </div>
+      <GoogleButton v-if="withGoogle" @start="resetError" @error="onError" @success="onSuccess"/>
+      <YandexButton v-if="withYandex"/>
     </div>
     <span :class="{error, visible:error!==null}">{{ error }}</span>
   </div>
@@ -9,17 +14,24 @@
 
 <script lang="ts">
 import GoogleButton from './components/GoogleButton.vue';
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useConfig} from "@/config";
+import YandexButton from "@/Form/components/YandexButton.vue";
+import axios from "axios";
+
 
 export default {
   name: 'Form',
-  components: {GoogleButton},
+  components: {YandexButton, GoogleButton},
   props: {
-    msg: String
+    yandexAccessToken: {
+      type: String,
+      required: false
+    }
   },
-  setup() {
-    const {basePath, theme} = useConfig();
+  setup(props: any) {
+    const {basePath, theme, apiUrl, authYandex, authGoogle} = useConfig();
+    const loading = ref<boolean>(false);
 
     const error = ref<string | null>(null);
 
@@ -42,12 +54,34 @@ export default {
       }, 100);
     }
 
+    const withYandex = authYandex && authYandex.enabled && authYandex.clientId;
+    const withGoogle = authGoogle && authGoogle.enabled && authGoogle.clientId;
+
+    onMounted(async () => {
+      if(!props.yandexAccessToken || !withYandex) return;
+
+      loading.value = true;
+      try {
+        const res = await axios.post(apiUrl + `/tager/auth/admin/yandex`, {accessToken: props.yandexAccessToken});
+        if(res.data.data?.accessToken) {
+          onSuccess(res.data.data);
+        } else{
+          loading.value = false;
+        }
+      } catch (e:any) {
+        loading.value = false;
+        error.value = e.response?.data?.message || 'Unknown error';
+      }
+    });
+
     return {
+      loading,
       error,
       resetError,
       onSuccess,
       onError,
-      isDark: theme === 'dark'
+      isDark: theme === 'dark',
+      withYandex, withGoogle
     }
   }
 }
@@ -56,10 +90,14 @@ export default {
 <style scoped lang="scss">
 .form {
   width: 100%;
-  padding: 15px;
+  padding: 1rem;
   margin: 0 auto;
   background-color: #fff;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  position: relative;
 
   &.dark{
     background-color: #333;
@@ -91,4 +129,53 @@ export default {
     opacity: 1;
   }
 }
+
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+  }
+
+  div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+
+  div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+}
+
+
+
+
 </style>

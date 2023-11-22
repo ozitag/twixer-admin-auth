@@ -38,16 +38,12 @@ const injectGoogleScript = () => {
     const googleScript = document.createElement('script');
     googleScript.setAttribute('src', 'https://accounts.google.com/gsi/client');
     document.head.appendChild(googleScript);
-
     googleScript.onload = resolve;
   });
 }
 
 export default {
   name: 'GoogleButton',
-  props: {
-    msg: String
-  },
   emits: ['start', 'error', 'success'],
   setup(_props, {emit}) {
     const loading = ref<boolean>(false);
@@ -56,7 +52,7 @@ export default {
     const button = ref<HTMLElement>()
 
     onMounted(async () => {
-      if (button.value && authGoogle.clientId) {
+      if (button.value && authGoogle && authGoogle.clientId) {
         await injectGoogleScript();
 
         initGoogle(authGoogle.clientId, async (token) => {

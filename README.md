@@ -8,9 +8,9 @@ open http://localhost:3003
 
 Publish:
 ```
-docker login --username ozitag
-docker build -t ozitag/tager-admin-auth --file .docker/Dockerfile .
-docker push ozitag/tager-admin-auth
+sudo docker login --username ozitag
+sudo docker build -t ozitag/tager-admin-auth --file .docker/Dockerfile .
+sudo docker push ozitag/tager-admin-auth
 ```
 
 Use in TAGER, docker-compose.yml:
