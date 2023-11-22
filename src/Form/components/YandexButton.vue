@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper">
-    <i :class="{loading: true, _visible: initLoading}"></i>
+  <div :class="{wrapper: true, _light: !isDark}">
+    <i :class="{loading: true, _light: !isDark, _visible: initLoading}"></i>
     <div class="button" id="yandex"></div>
   </div>
 </template>
@@ -19,12 +19,12 @@ const injectYandexScript = () => {
   });
 }
 
-const renderButton = async (clientId: string, language: 'en' | 'ru'): Promise<void> => {
+const renderButton = async (clientId: string, theme: 'light' | 'dark', language: 'en' | 'ru'): Promise<void> => {
   const viewParams = {
     view: 'button',
     parentId: 'yandex',
     buttonView: 'main',
-    buttonTheme: 'light',
+    buttonTheme: theme === 'light' ? 'dark' : 'light',
     buttonSize: 's',
     buttonBorderRadius: 4,
     buttonIcon: language === 'ru' ? 'ya' : 'yaEng'
@@ -58,7 +58,7 @@ export default {
     onMounted(async () => {
       if (authYandex && authYandex.enabled && authYandex.clientId) {
         await injectYandexScript();
-        await renderButton(authYandex.clientId, language);
+        await renderButton(authYandex.clientId, theme,language);
         initLoading.value = false;
       }
     });
@@ -81,7 +81,7 @@ export default {
   .loading {
     position: absolute;
     inset: 0;
-    background: rgba(22, 22, 22, .6);
+    background: rgba(22, 22, 22, .5);
     z-index: 2;
     opacity: 0;
     transition: 0.3s all ease;
@@ -91,6 +91,14 @@ export default {
       opacity: 1;
       visibility: visible;
     }
+
+    &._light{
+      background: rgba(255, 255, 255, .5);
+    }
+  }
+
+  &._light{
+    border: 1px solid #dadce0;
   }
 }
 

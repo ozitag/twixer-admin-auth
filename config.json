@@ -1,5 +1,5 @@
 {
-  "theme": "dark",
+  "theme": "light",
   "language": "ru",
   "basePath": "/",
   "apiUrl": "http://localhost:7001/api",

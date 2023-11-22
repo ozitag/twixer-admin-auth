@@ -1,8 +1,7 @@
 <template>
   <div class="inner">
     <div :class="{form: true, dark: isDark}">
-      <div class="loader" v-if="loading">
-
+      <div :class="{loader: true, light: !isDark}" v-if="loading">
        <div></div><div></div><div></div><div></div>
       </div>
       <GoogleButton v-if="withGoogle" @start="resetError" @error="onError" @success="onSuccess"/>
@@ -149,6 +148,7 @@ export default {
   align-items: center;
   justify-content: center;
 
+
   div {
     box-sizing: border-box;
     display: block;
@@ -156,7 +156,7 @@ export default {
     width: 32px;
     height: 32px;
     margin: 8px;
-    border: 4px solid #fff;
+    border: 4px solid;
     border-radius: 50%;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: #fff transparent transparent transparent;
@@ -173,6 +173,15 @@ export default {
   div:nth-child(3) {
     animation-delay: -0.15s;
   }
+
+  &.light{
+    background: rgba(255,255,255,.75);
+
+    div{
+      border-color: #333 transparent transparent transparent;
+    }
+  }
+
 }
 
 
