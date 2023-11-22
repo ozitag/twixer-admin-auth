@@ -8,8 +8,8 @@ open http://localhost:3003
 
 Publish:
 ```
-sudo docker login --username ozitag
-sudo docker build --platform linux/amd64 -t ozitag/tager-admin-auth --file .docker/Dockerfile .
+sudo docker login --username ozitag && 
+sudo docker build --platform linux/amd64 -t ozitag/tager-admin-auth --file .docker/Dockerfile . &&
 sudo docker push ozitag/tager-admin-auth
 ```
 
